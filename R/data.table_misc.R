@@ -72,3 +72,40 @@ move_columns <- function(data_in, move_command) {
           "data.table::setDT() before passing it to move_columns."))
   data.table::setcolorder(data_in, move_vec(names(data_in), move_command))
 }
+
+#' Print sum(s) of missing values
+#'
+#' Prints sum(s) of missing values (coded as \code{NA}) in an object (\code{vector},
+#' \code{data.frame}, \code{data.table} etc.).
+#'
+#' @param data Input object.
+#' @param prop Flag indicating if results should include proportions.
+#' @param print Flag indicating if results should be printed.
+#'
+#' @return Table with missing values counts (and proportions).
+#' @export
+#'
+#' @examples
+#' dt <- data.table::data.table(a = rnorm(n=1000, mean=20, sd=5),
+#'                              b = rnorm(n=1000, mean=20, sd=5),
+#'                              c = rnorm(n=1000, mean=20, sd=5))
+#' dt[sample.int(nrow(dt), round(nrow(dt) * 0.15)), a := NA_real_]
+#' count_NAs(dt)
+#' count_NAs(dt, prop = TRUE)
+#' count_NAs(dt[, a])
+#' count_NAs(dt[, a], prop = TRUE)
+#' count_NAs(dt[, .(a)])
+#' count_NAs(dt[, .(a)], prop = TRUE)
+count_NAs <- function(data, prop = FALSE, print = TRUE) {
+  if (is.null(dim(data))) {
+    message("To see nicer formatted output use data.table's dt[, .(col_name)] syntax.")
+    NAs_tab <- data.frame(Count = sum(is.na(data)), row.names = "Variable")
+    if(prop) NAs_tab <- cbind(Count = NAs_tab, Prop = round(sum(is.na(data))/length(data)*100, 2))
+  } else {
+    NAs_tab <- data.table::data.table(Variable = names(data), Count = colSums(is.na(data)))
+    if(prop) NAs_tab[, Prop := round(Count/nrow(data)*100, 2)]
+    data.table::setorder(NAs_tab, -Count, Variable)
+  }
+  if (print) print(NAs_tab)
+  else return(NAs_tab)
+}

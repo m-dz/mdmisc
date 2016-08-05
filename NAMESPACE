@@ -3,3 +3,5 @@
 export(count_NAs)
 export(move_columns)
 export(move_vec)
+export(table_data_table)
+import(data.table)

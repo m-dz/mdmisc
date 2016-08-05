@@ -96,16 +96,40 @@ move_columns <- function(data_in, move_command) {
 #' count_NAs(dt[, a], prop = TRUE)
 #' count_NAs(dt[, .(a)])
 #' count_NAs(dt[, .(a)], prop = TRUE)
-count_NAs <- function(data, prop = FALSE, print = TRUE) {
-  if (is.null(dim(data))) {
+count_NAs <- function(data_in, prop = FALSE, print = TRUE) {
+  if (is.null(dim(data_in))) {
     message("To see nicer formatted output use data.table's dt[, .(col_name)] syntax.")
-    NAs_tab <- data.frame(Count = sum(is.na(data)), row.names = "Variable")
-    if(prop) NAs_tab <- cbind(Count = NAs_tab, Prop = round(sum(is.na(data))/length(data)*100, 2))
+    NAs_tab <- data.frame(Count = sum(is.na(data_in)), row.names = "Variable")
+    if(prop) NAs_tab <- cbind(Count = NAs_tab, Prop = round(sum(is.na(data_in))/length(data_in)*100, 2))
   } else {
-    NAs_tab <- data.table::data.table(Variable = names(data), Count = colSums(is.na(data)))
-    if(prop) NAs_tab[, Prop := round(Count/nrow(data)*100, 2)]
+    NAs_tab <- data.table::data.table(Variable = names(data_in), Count = colSums(is.na(data_in)))
+    if(prop) NAs_tab[, Prop := round(Count/nrow(data_in)*100, 2)]
     data.table::setorder(NAs_tab, -Count, Variable)
   }
   if (print) print(NAs_tab)
   else return(NAs_tab)
+}
+
+#' Counts and percentages table by a specified colname(s)
+#'
+#' @param data_in \code{data.table} to process
+#' @param colname Column name(s) to calculate counts and parcentages
+#'
+#' @return \code{data.table} with counts and parcentages
+#' @export
+#' @import data.table
+#'
+#' @examples
+#' set.seed(2016)
+#' dt <- data.table::data.table(A = sample(LETTERS[1:10], 200, replace = TRUE), B = sample(LETTERS[1:10], 200, replace = TRUE))
+#' table_data_table(dt, "A")
+#' table_data_table(dt, "B")
+#' table_data_table(dt, c("A", "B"))
+table_data_table <- function(data_in, colname) {
+  if (!data.table::is.data.table(data_in)) stop(
+    paste("Function is designed to work with a data.table object, please use",
+          "data.table::setDT() before passing it to move_columns."))
+  t <- data_in[, .(N = .N,
+                  PCT = round(.N/nrow(data_in)*100, 2)), by = colname][order(-N)]
+  return(t)
 }

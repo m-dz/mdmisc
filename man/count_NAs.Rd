@@ -4,14 +4,14 @@
 \alias{count_NAs}
 \title{Print sum(s) of missing values}
 \usage{
-count_NAs(data, prop = FALSE, print = TRUE)
+count_NAs(data_in, prop = FALSE, print = TRUE)
 }
 \arguments{
-\item{data}{Input object.}
-
 \item{prop}{Flag indicating if results should include proportions.}
 
 \item{print}{Flag indicating if results should be printed.}
+
+\item{data}{Input object.}
 }
 \value{
 Table with missing values counts (and proportions).

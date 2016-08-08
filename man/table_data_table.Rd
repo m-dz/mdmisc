@@ -19,7 +19,8 @@ Counts and percentages table by a specified colname(s)
 }
 \examples{
 set.seed(2016)
-dt <- data.table::data.table(A = sample(LETTERS[1:10], 200, replace = TRUE), B = sample(LETTERS[1:10], 200, replace = TRUE))
+dt <- data.table::data.table(A = sample(LETTERS[1:10], 200, replace = TRUE),
+                             B = sample(LETTERS[1:10], 200, replace = TRUE))
 table_data_table(dt, "A")
 table_data_table(dt, "B")
 table_data_table(dt, c("A", "B"))

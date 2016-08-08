@@ -17,8 +17,8 @@ count_NAs(data_in, prop = FALSE, print = TRUE)
 Table with missing values counts (and proportions).
 }
 \description{
-Prints sum(s) of missing values (coded as \code{NA}) in an object (\code{vector},
-\code{data.frame}, \code{data.table} etc.).
+Prints sum(s) of missing values (coded as \code{NA}) in an object
+(\code{vector}, \code{data.frame}, \code{data.table} etc.).
 }
 \examples{
 dt <- data.table::data.table(a = rnorm(n=1000, mean=20, sd=5),

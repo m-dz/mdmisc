@@ -41,7 +41,8 @@ test_that("count_NAs is working as expected", {
 test_that("table_data_table is working as expected", {
   require(data.table)
   set.seed(2016)
-  dt <- data.table(A = sample(LETTERS[1:10], 200, replace = TRUE), B = sample(LETTERS[1:10], 200, replace = TRUE))
+  dt <- data.table(A = sample(LETTERS[1:10], 200, replace = TRUE),
+                   B = sample(LETTERS[1:10], 200, replace = TRUE))
   expected_A <- data.table(
     A = c("B", "D", "G", "A", "F", "C", "I", "E", "H", "J"),
     N = c(26L, 25L, 24L, 23L, 20L, 19L, 18L, 17L, 15L, 13L),

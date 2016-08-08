@@ -27,7 +27,7 @@
 #' move_vec(names(df), "g first; a last")
 move_vec <- function(vec_in, move_command) {
   move_command <- lapply(strsplit(strsplit(move_command, ";")[[1]], ",|\\s+"),
-                        function(x) x[x != ""])
+                         function(x) x[x != ""])
   move_list <- lapply(move_command, function(x) {
     Where <- x[which(x %in% c("before", "after", "first", "last")):length(x)]
     ToMove <- setdiff(x, Where)
@@ -75,8 +75,8 @@ move_columns <- function(data_in, move_command) {
 
 #' Print sum(s) of missing values
 #'
-#' Prints sum(s) of missing values (coded as \code{NA}) in an object (\code{vector},
-#' \code{data.frame}, \code{data.table} etc.).
+#' Prints sum(s) of missing values (coded as \code{NA}) in an object
+#' (\code{vector}, \code{data.frame}, \code{data.table} etc.).
 #'
 #' @param data Input object.
 #' @param prop Flag indicating if results should include proportions.
@@ -98,11 +98,15 @@ move_columns <- function(data_in, move_command) {
 #' count_NAs(dt[, .(a)], prop = TRUE)
 count_NAs <- function(data_in, prop = FALSE, print = TRUE) {
   if (is.null(dim(data_in))) {
-    message("To see nicer formatted output use data.table's dt[, .(col_name)] syntax.")
+    message(paste("To see nicer formatted output use data.table's",
+                  "dt[, .(col_name)] syntax."))
     NAs_tab <- data.frame(Count = sum(is.na(data_in)), row.names = "Variable")
-    if(prop) NAs_tab <- cbind(Count = NAs_tab, Prop = round(sum(is.na(data_in))/length(data_in)*100, 2))
+    if(prop) NAs_tab <-
+      cbind(Count = NAs_tab,
+            Prop = round(sum(is.na(data_in))/length(data_in)*100, 2))
   } else {
-    NAs_tab <- data.table::data.table(Variable = names(data_in), Count = colSums(is.na(data_in)))
+    NAs_tab <- data.table::data.table(Variable = names(data_in),
+                                      Count = colSums(is.na(data_in)))
     if(prop) NAs_tab[, Prop := round(Count/nrow(data_in)*100, 2)]
     data.table::setorder(NAs_tab, -Count, Variable)
   }
@@ -121,7 +125,8 @@ count_NAs <- function(data_in, prop = FALSE, print = TRUE) {
 #'
 #' @examples
 #' set.seed(2016)
-#' dt <- data.table::data.table(A = sample(LETTERS[1:10], 200, replace = TRUE), B = sample(LETTERS[1:10], 200, replace = TRUE))
+#' dt <- data.table::data.table(A = sample(LETTERS[1:10], 200, replace = TRUE),
+#'                              B = sample(LETTERS[1:10], 200, replace = TRUE))
 #' table_data_table(dt, "A")
 #' table_data_table(dt, "B")
 #' table_data_table(dt, c("A", "B"))
@@ -130,6 +135,7 @@ table_data_table <- function(data_in, colname) {
     paste("Function is designed to work with a data.table object, please use",
           "data.table::setDT() before passing it to move_columns."))
   t <- data_in[, .(N = .N,
-                  PCT = round(.N/nrow(data_in)*100, 2)), by = colname][order(-N)]
+                   PCT = round(.N/nrow(data_in)*100, 2)),
+               by = colname][order(-N)]
   return(t)
 }

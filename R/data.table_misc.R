@@ -54,19 +54,19 @@ move_vec <- function(vec_in, move_command) {
   vec_out
 }
 
-#' Applies \code{move_columns} to a \code{data.table}.
+#' Applies \code{move_vec} to a \code{data.table}.
 #'
 #' @param data_in Input \code{data.table} object.
 #' @param move_command Rearrange command string.
 #'
 #' @return Rearranged input object.
-#' @export move_columns
+#' @export move_data_table
 #'
 #' @examples
 #' dt <- data.table::data.table(a = 1:3, b = 1:3, g = 1:3)
-#' move_columns(dt, "g first")
-#' move_columns(dt, "g first; a last")
-move_columns <- function(data_in, move_command) {
+#' move_data_table(dt, "g first")
+#' move_data_table(dt, "g first; a last")
+move_data_table <- function(data_in, move_command) {
   if (!data.table::is.data.table(data_in)) stop(
     paste("Function is designed to work with a data.table object, please use",
           "data.table::setDT() before passing it to move_columns."))

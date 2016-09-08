@@ -1,44 +1,48 @@
 
+
 # Some useful keyboard shortcuts for package authoring:
 #
 #   Build and Reload Package:  'Ctrl + Shift + B'
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
 
-.datatable.aware = TRUE
+# .datatable.aware = TRUE
+# Not needed:
+# http://stackoverflow.com/questions/15223367/
+# wrapping-data-table-using-an-evaluated-call-in-a-package
 
 #' Rearrange character vector.
 #'
-#' \code{move_vec} rearranges and returns an input character vector.
+#' \code{reorder_vec} rearranges and returns an input character vector.
 #' Possible "rearrange" words: c("before", "after", "first", "last")
 #'
 #' Source: http://stackoverflow.com/a/18540144/4272484 with minor amendments
 #'
 #' @param vec_in Input character vector.
-#' @param move_command Rearrange command.
+#' @param reorder_command Rearrange command.
 #'
 #' @return Rearranged \code{vec_in}.
-#' @export move_vec
+#' @export reorder_vec
 #'
 #' @examples
-#' move_vec(c("a", "b", "g"), "g first")
+#' reorder_vec(c("a", "b", "g"), "g first")
 #' df <- data.frame(a = 1:3, b = 1:3, g = 1:3)
-#' move_vec(names(df), "g first")
-#' move_vec(names(df), "g first; a last")
-move_vec <- function(vec_in, move_command) {
-  move_command <- lapply(strsplit(strsplit(move_command, ";")[[1]], ",|\\s+"),
+#' reorder_vec(names(df), "g first")
+#' reorder_vec(names(df), "g first; a last")
+reorder_vec <- function(vec_in, reorder_command) {
+  reorder_command <- lapply(strsplit(strsplit(reorder_command, ";")[[1]], ",|\\s+"),
                          function(x) x[x != ""])
-  move_list <- lapply(move_command, function(x) {
+  reorder_list <- lapply(reorder_command, function(x) {
     Where <- x[which(x %in% c("before", "after", "first", "last")):length(x)]
     ToMove <- setdiff(x, Where)
     list(ToMove, Where)
   })
   vec_out <- vec_in
-  for (i in seq_along(move_list)) {
-    temp <- setdiff(vec_out, move_list[[i]][[1]])
-    A <- move_list[[i]][[2]][1]
+  for (i in seq_along(reorder_list)) {
+    temp <- setdiff(vec_out, reorder_list[[i]][[1]])
+    A <- reorder_list[[i]][[2]][1]
     if (A %in% c("before", "after")) {
-      ba <- move_list[[i]][[2]][2]
+      ba <- reorder_list[[i]][[2]][2]
       if (A == "before") {
         after <- match(ba, temp)-1
       } else if (A == "after") {
@@ -49,28 +53,28 @@ move_vec <- function(vec_in, move_command) {
     } else if (A == "last") {
       after <- length(vec_out)
     }
-    vec_out <- append(temp, values = move_list[[i]][[1]], after = after)
+    vec_out <- append(temp, values = reorder_list[[i]][[1]], after = after)
   }
   vec_out
 }
 
-#' Applies \code{move_vec} to a \code{data.table}.
+#' Applies \code{reorder_vec} to a \code{data.table}.
 #'
 #' @param data_in Input \code{data.table} object.
-#' @param move_command Rearrange command string.
+#' @param reorder_command Rearrange command string.
 #'
 #' @return Rearranged input object.
-#' @export move_data_table
+#' @export reorder_col
 #'
 #' @examples
 #' dt <- data.table::data.table(a = 1:3, b = 1:3, g = 1:3)
-#' move_data_table(dt, "g first")
-#' move_data_table(dt, "g first; a last")
-move_data_table <- function(data_in, move_command) {
+#' reorder_col(dt, "g first")
+#' reorder_col(dt, "g first; a last")
+reorder_col <- function(data_in, reorder_command) {
   if (!data.table::is.data.table(data_in)) stop(
     paste("Function is designed to work with a data.table object, please use",
-          "data.table::setDT() before passing it to move_columns."))
-  data.table::setcolorder(data_in, move_vec(names(data_in), move_command))
+          "data.table::setDT() before passing it to reorder_columns."))
+  data.table::setcolorder(data_in, reorder_vec(names(data_in), reorder_command))
 }
 
 #' Print sum(s) of missing values
@@ -133,7 +137,7 @@ count_NAs <- function(data_in, prop = FALSE, print = TRUE) {
 table_data_table <- function(data_in, colname) {
   if (!data.table::is.data.table(data_in)) stop(
     paste("Function is designed to work with a data.table object, please use",
-          "data.table::setDT() before passing it to move_columns."))
+          "data.table::setDT() before passing it to reorder_columns."))
   t <- data_in[, .(N = .N,
                    PCT = round(.N/nrow(data_in)*100, 2)),
                by = colname][order(-N)]

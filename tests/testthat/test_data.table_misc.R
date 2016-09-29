@@ -7,11 +7,11 @@ test_that("reorder_vec is working as expected", {
   expect_equal(reorder_vec(names(df), "g first; a last"), c("g", "b", "a"))
 })
 
-test_that("reorder_col is working as expected", {
+test_that("reorder_columns is working as expected", {
   require(data.table)
   dt <- data.table::data.table(a = 1:3, b = 1:3, g = 1:3)
-  expect_equal(reorder_col(dt, "g first"),  dt[, .(g, a, b)])
-  expect_equal(reorder_col(dt, "g first; a last"), dt[, .(g, b, a)])
+  expect_equal(reorder_columns(dt, "g first"),  dt[, .(g, a, b)])
+  expect_equal(reorder_columns(dt, "g first; a last"), dt[, .(g, b, a)])
 })
 
 test_that("count_NAs is working as expected", {

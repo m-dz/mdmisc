@@ -64,16 +64,16 @@ reorder_vec <- function(vec_in, reorder_command) {
 #' @param reorder_command Rearrange command string.
 #'
 #' @return Rearranged input object.
-#' @export reorder_col
+#' @export reorder_columns
 #'
 #' @examples
 #' dt <- data.table::data.table(a = 1:3, b = 1:3, g = 1:3)
-#' reorder_col(dt, "g first")
-#' reorder_col(dt, "g first; a last")
-reorder_col <- function(data_in, reorder_command) {
+#' reorder_columns(dt, "g first")
+#' reorder_columns(dt, "g first; a last")
+reorder_columns <- function(data_in, reorder_command) {
   if (!data.table::is.data.table(data_in)) stop(
     paste("Function is designed to work with a data.table object, please use",
-          "data.table::setDT() before passing it to reorder_columns."))
+          "data.table::setDT() before passing it to reorder_columnsumns."))
   data.table::setcolorder(data_in, reorder_vec(names(data_in), reorder_command))
 }
 
@@ -137,7 +137,7 @@ count_NAs <- function(data_in, prop = FALSE, print = TRUE) {
 table_data_table <- function(data_in, colname) {
   if (!data.table::is.data.table(data_in)) stop(
     paste("Function is designed to work with a data.table object, please use",
-          "data.table::setDT() before passing it to reorder_columns."))
+          "data.table::setDT() before passing it to reorder_columnsumns."))
   t <- data_in[, .(N = .N,
                    PCT = round(.N/nrow(data_in)*100, 2)),
                by = colname][order(-N)]

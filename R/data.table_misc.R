@@ -143,3 +143,17 @@ table_data_table <- function(data_in, colname) {
                by = colname][order(-N)]
   return(t)
 }
+
+#' Copies data from clipboard (e.g. Excel)
+#'
+#' @param header \code{Logical}, indicates if the data have a header row
+#'
+#' @return \code{data.table} with pasted data
+#' @export
+#' @importFrom data.table data.table
+#'
+#' @examples
+copy_from_clipboard <- function(header = TRUE) {
+  read.table("clipboard", header = header, stringsAsFactors = FALSE) %>%
+    data.table()
+}

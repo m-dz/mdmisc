@@ -15,3 +15,10 @@ context("Test misc.R functions from mdmisc package")
 #   expect_equal(test_val, expected
 #   )
 # })
+
+test_that("sorted_names is working as expected", {
+  df <- data.frame(b = 1, a = 2)
+  test_val <- sorted_names(df)
+  expected <- c("a", "b")
+  expect_equal(test_val, expected)
+})

@@ -4,7 +4,7 @@
 \alias{list_csv_files}
 \title{Lists CSV files in the specified directory}
 \usage{
-list_csv_files(path = ".", full_names = FALSE)
+list_csv_files(path = ".", full_paths = FALSE)
 }
 \arguments{
 \item{full_names}{}

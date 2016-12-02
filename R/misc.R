@@ -1,4 +1,18 @@
 
+#' Read password from specified file
+#'
+#' @param file Text file with password stored
+#'
+#' @return String with password
+#' @export
+#'
+#' @examples
+read_pass <- function(file_path) {
+  con = file(file_path, "r")
+  readLines(con, n = 1)
+  close(con)
+}
+
 #' Lists CSV files in the specified directory
 #'
 #' @param path

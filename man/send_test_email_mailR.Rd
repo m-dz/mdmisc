@@ -15,4 +15,3 @@ Sends test email using \code{send_email_mailR} function
 \examples{
 send_test_email_mailR()
 }
-

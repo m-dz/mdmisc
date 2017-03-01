@@ -4,7 +4,8 @@
 \alias{mark_outliers_quant}
 \title{Find outliers using 0.01 and 0.99 quantiles}
 \usage{
-mark_outliers_quant(x, na.rm = TRUE, quants = c(0.01, 0.99), ...)
+mark_outliers_quant(x, na.rm = TRUE, quants = c(0.01, 0.99),
+  return_params = FALSE, ...)
 }
 \arguments{
 \item{x}{Processed \code{vector}}
@@ -25,4 +26,3 @@ outside of the 0.01 and 0.99 quantiles.
 \examples{
 mark_outliers_quant(rnorm(20, 0, 1))
 }
-

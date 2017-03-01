@@ -1,6 +1,6 @@
 Package: mdmisc
 Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
+Version: 0.0.0.9002
 Authors@R: 'Mateusz Dziedzic <mat.dziedzic@gmail.com> [aut, cre]'
 Description: What the package does (one paragraph).
 Depends:
@@ -13,4 +13,4 @@ Suggests:
 Imports:
     data.table (>= 1.9.7),
     grid (>= 3.3.1)
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

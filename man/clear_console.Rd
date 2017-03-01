@@ -15,4 +15,3 @@ Clear console
 \examples{
 ClearConsole()
 }
-

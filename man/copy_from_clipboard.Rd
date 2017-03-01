@@ -15,4 +15,3 @@ copy_from_clipboard(header = TRUE)
 \description{
 Copies data from clipboard (e.g. Excel)
 }
-

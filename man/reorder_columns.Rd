@@ -22,4 +22,3 @@ dt <- data.table::data.table(a = 1:3, b = 1:3, g = 1:3)
 reorder_columns(dt, "g first")
 reorder_columns(dt, "g first; a last")
 }
-

@@ -18,7 +18,18 @@ context("Test misc.R functions from mdmisc package")
 
 test_that("sorted_names is working as expected", {
   df <- data.frame(b = 1, a = 2)
-  test_val <- sorted_names(df)
+  test_val <- mdmisc::sorted_names(df)
   expected <- c("a", "b")
   expect_equal(test_val, expected)
+})
+
+test_that("setdiff_two_way is working as expected", {
+  test_diff <- mdmisc::setdiff_two_way(
+    letters[1:10],
+    letters[2:10]
+  )
+  expected_first <- c("a")
+  expected_second <- character()
+  expect_equal(test_diff$First, expected_first)
+  expect_equal(test_diff$Second, expected_second)
 })

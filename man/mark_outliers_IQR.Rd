@@ -4,7 +4,8 @@
 \alias{mark_outliers_IQR}
 \title{Find outliers using 1.5 IQR method}
 \usage{
-mark_outliers_IQR(x, na.rm = TRUE, quants = c(0.25, 0.75), ...)
+mark_outliers_IQR(x, na.rm = TRUE, quants = c(0.25, 0.75),
+  return_params = FALSE, ...)
 }
 \arguments{
 \item{x}{Processed \code{vector}}
@@ -26,4 +27,3 @@ within 1.5 * \code{IQR} from specified quantiles of the \code{numeric}
 \examples{
 mark_outliers_IQR(rnorm(20, 0, 1))
 }
-

@@ -18,4 +18,3 @@ Returns sorted names of the object
 \examples{
 df <- data.frame(b = 1, a = 2); names(df); sorted_names(df)
 }
-

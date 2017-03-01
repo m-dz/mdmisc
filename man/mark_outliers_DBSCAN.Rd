@@ -14,4 +14,3 @@ mark_outliers_DBSCAN(x, na.rm = TRUE, quant = 0.15, dist_method = "euc",
 Function returns \code{logical} \code{vector} indicating whether a value lies
 outside of density based clusters
 }
-

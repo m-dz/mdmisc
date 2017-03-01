@@ -2,7 +2,7 @@
 % Please edit documentation in R/data.table_misc.R
 \name{count_NAs}
 \alias{count_NAs}
-\title{Print sum(s) of missing values}
+\title{Prints count(s) of missing values}
 \usage{
 count_NAs(data_in, prop = FALSE, print = TRUE)
 }
@@ -14,10 +14,10 @@ count_NAs(data_in, prop = FALSE, print = TRUE)
 \item{data}{Input object.}
 }
 \value{
-Table with missing values counts (and proportions).
+Table with counts (and proportions if TRUE) of missing values.
 }
 \description{
-Prints sum(s) of missing values (coded as \code{NA}) in an object
+Prints count(s) of missing values (coded as \code{NA}) in an object
 (\code{vector}, \code{data.frame}, \code{data.table} etc.).
 }
 \examples{
@@ -32,4 +32,3 @@ count_NAs(dt[, a], prop = TRUE)
 count_NAs(dt[, .(a)])
 count_NAs(dt[, .(a)], prop = TRUE)
 }
-

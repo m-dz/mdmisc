@@ -25,4 +25,3 @@ table_data_table(dt, "A")
 table_data_table(dt, "B")
 table_data_table(dt, c("A", "B"))
 }
-

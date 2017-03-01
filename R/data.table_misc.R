@@ -1,4 +1,134 @@
 
+#' Return a random sample of row ids (by grouping)
+#'
+#' @param dt
+#' @param pct
+#' @param grouping
+#' @param sort
+#'
+#' @return
+#' @export
+#' @import data.table
+#'
+#' @examples
+#' set.seed(2016)
+#' size <- 10
+#' dt <- data.table(
+#'   id = 1:size, A = sample(letters[1:3], size, replace = TRUE), B = 'N',
+#'   C = sample(1:100, size, replace = TRUE) + sample(30:70, size, replace = TRUE))
+#' set.seed(2016)
+#' sample_ids(dt, 0.5, grouping = 'A')
+#' set.seed(2016)
+#' sample_ids(dt, 0.5, grouping = 'A', sort = TRUE)
+#' set.seed(2016)
+#' sample_ids(dt, 0.5, grouping = 'A', return_grouping = TRUE)
+#' set.seed(2016)
+#' sample_ids(dt, 0.5, grouping = 'A', sort = TRUE, return_grouping = TRUE)
+sample_ids <- function(dt, pct, grouping = NULL, sort = FALSE, return_grouping = FALSE) {
+  out <- dt[, .I[sample(.N, round(.N*pct))], by = grouping]
+  if(sort) {
+    if(return_grouping) return(out[order(V1)])
+    else return(out[order(V1), V1])
+  } else {
+    if(return_grouping) return(out)
+    else return(out[, V1])
+  }
+}
+
+#' Title
+#'
+#' @param dt       \code{data.table} to sample from
+#' @param pct      Percentage of data sampled
+#' @param grouping Grouping (a \code{character vector})
+#' @param sort     c('no', 'id', 'gr')
+#'
+#' @return \code{data.table} with sampled data
+#' @export
+#' @import data.table
+#'
+#' @examples
+#' set.seed(2016)
+#' size <- 10
+#' dt <- data.table(
+#'   id = 1:size, A = sample(letters[1:3], size, replace = TRUE), B = 'N',
+#'   C = sample(1:100, size, replace = TRUE) + sample(30:70, size, replace = TRUE))
+#' set.seed(2016)
+#' sample_rows(dt, 0.5, grouping = 'A')
+#' sample_rows(dt, 0.5, grouping = 'A', sort = TRUE)
+#' sample_rows(dt, 0.5, grouping = c('A','B'), sort = TRUE)
+sample_rows <- function(dt, pct, grouping, sort = FALSE) {
+  out <- dt[dt[, sample(.I, round(.N*pct)), by = grouping]$V1, ]
+  if(sort) {
+    setorderv(out, grouping)
+    out
+  } else out
+}
+
+#' Replace given value in a random pct of rows (by grouping)
+#'
+#' Function modifies the input dt!
+#'
+#' @param dt
+#' @param pct
+#' @param col_name
+#' @param value
+#' @param grouping
+#'
+#' @return
+#' @export
+#' @import data.table
+#'
+#' @examples
+#' set.seed(2016)
+#' size <- 10
+#' dt <- data.table(
+#'   id = 1:size, A = sample(letters[1:3], size, replace = TRUE), B = 'N',
+#'   C = sample(1:100, size, replace = TRUE) + sample(30:70, size, replace = TRUE))
+#' set.seed(2016)
+#' sample_and_replace_value(dt, pct = 0.5, col_name = 'B', value = 'Y', grouping = 'A')
+#' dt[, table(A, B)]
+#' sample_and_replace_value(dt, pct = 0.5, col_name = 'B', value = 'Y', grouping = 'A', sort = TRUE)
+#' dt
+sample_and_replace_value <- function(dt, pct, col_name, value, grouping = NULL, sort = FALSE) {
+  # dt[dt[, .I[sample(.N, round(.N*pct))], by = grouping]$V1, (col_name) := value]
+  dt[dt[, sample(.I, round(.N*pct)), by = grouping]$V1, (col_name) := value]
+  if(sort) setorderv(dt, grouping) else dt
+}
+
+#'
+#' Drop columns in \code{data.table} by reference or returning a copy.
+#'
+#' @param dt     \code{data.table} to process
+#' @param cols   Column names to drop, vector of strings
+#' @param modify Boolean, indicating whether columns should be dropped by reference of a copy should be returned
+#'
+#' @return
+#' @export
+#' @import data.table
+#'
+#' @examples
+#' require(data.table)
+#' dt <- data.table(V1 = 1, V2 = 2, V3 = 3)
+#' print(dt)
+#' dt_dropped <- drop_cols(dt, c("V1", "V2"), modify = FALSE)
+#' print(dt)
+#' print(dt_dropped)
+#' drop_cols(dt, c("V1", "V2"), modify = TRUE)
+#' print(dt)
+drop_cols <- function(dt, cols, modify = FALSE) {
+  # if (modify == TRUE) stop("modify = TRUE not implemented")
+  cols_to_drop <- intersect(names(dt), cols)
+  if (length(cols_to_drop) == 0) {
+    warning('No columns to drop.')
+    return(dt)
+  } else {
+    if (!modify) {
+      return(dt[, .SD, .SDcols = !cols_to_drop])
+    } else {
+      return(dt[, (cols_to_drop) := NULL])
+    }
+  }
+}
 
 # Some useful keyboard shortcuts for package authoring:
 #
@@ -10,6 +140,45 @@
 # Not needed:
 # http://stackoverflow.com/questions/15223367/
 # wrapping-data-table-using-an-evaluated-call-in-a-package
+
+#' Fills specified values (def. empty strings) in data.table with an NA.
+#'
+#' @param data_in
+#' @param values_to_fill
+#' @param cols_to_fill
+#'
+#' @return
+#' @export
+#' @import data.table
+#'
+#' @examples
+fill_values_with_NA <- function(data_in, values_to_fill = '', cols_to_fill = names(data_in)) {
+  # TODO: Write tests
+  # TODO: Split to different column classes (bool, numeric, character etc.)
+  data_in[, (cols_to_fill) := lapply(
+    .SD, function(col) { ifelse(col %in% values_to_fill, NA, col) }),
+    .SDcols = cols_to_fill]
+}
+
+#' Fills missing values in data.table with a specified constant value.
+#'
+#' @param data_in
+#' @param const_val
+#' @param cols_to_fill
+#'
+#' @return
+#' @export
+#' @import data.table
+#'
+#' @examples
+fill_NAs_with_const <- function(data_in, const_val = 0, cols_to_fill = names(data_in)) {
+  # TODO: Write tests
+  # TODO: Split to different column classes (bool, numeric, character etc.)
+  message('Function currently working with numeric columns only.')
+  data_in[, (cols_to_fill) := lapply(
+    .SD, function(col) { ifelse(is.na(col), const_val, col) }),
+    .SDcols = cols_to_fill]
+}
 
 #' Rearrange character vector.
 #'
@@ -77,16 +246,16 @@ reorder_columns <- function(data_in, reorder_command) {
   data.table::setcolorder(data_in, reorder_vec(names(data_in), reorder_command))
 }
 
-#' Print sum(s) of missing values
+#' Prints count(s) of missing values
 #'
-#' Prints sum(s) of missing values (coded as \code{NA}) in an object
+#' Prints count(s) of missing values (coded as \code{NA}) in an object
 #' (\code{vector}, \code{data.frame}, \code{data.table} etc.).
 #'
 #' @param data Input object.
 #' @param prop Flag indicating if results should include proportions.
 #' @param print Flag indicating if results should be printed.
 #'
-#' @return Table with missing values counts (and proportions).
+#' @return Table with counts (and proportions if TRUE) of missing values.
 #' @export
 #'
 #' @examples
@@ -117,6 +286,44 @@ count_NAs <- function(data_in, prop = FALSE, print = TRUE) {
   if (print) print(NAs_tab)
   else return(NAs_tab)
 }
+
+#' Prints count(s) of specified values
+#'
+#' Prints count(s) of specified values in a \code{data.table} object.
+#'
+#' @param dt_in
+#' @param value
+#' @param prop
+#' @param na.rm
+#' @param print
+#'
+#' @return Table with counts (and proportions if TRUE) of specified values.
+#' @export
+#'
+#' @examples
+#' dt <- data.table::data.table(a = rnorm(n=1000, mean=20, sd=5),
+#'                              b = rnorm(n=1000, mean=20, sd=5),
+#'                              c = rnorm(n=1000, mean=20, sd=5))
+#' dt[sample.int(nrow(dt), round(nrow(dt) * 0.15)), a := -Inf]
+#' count_values(dt)
+#' count_values(dt, prop = TRUE)
+#' count_values(dt, -Inf)
+#' count_values(dt, -Inf, prop = TRUE)
+#'
+#' TODO: Write tests
+count_values <- function(dt_in, value = '', prop = FALSE, na.rm = TRUE, print = TRUE) {
+  if(!data.table::is.data.table(dt_in)) error('Function currently working only on data.tables')
+  NAs_tab <- data.table::data.table(
+    Variable = names(dt_in),
+    Count = colSums(dt_in[, lapply(.SD, function(col) ifelse(col == value,1L,0L))], na.rm = na.rm))
+  if(prop) NAs_tab[, Prop := round(Count/nrow(dt_in)*100, 2)]
+  data.table::setorder(NAs_tab, -Count, Variable)
+  if (print) print(NAs_tab)
+  else return(NAs_tab)
+}
+# Same with direct sapply
+# count_values <- function(dt_in, value = '', prop = FALSE, na.rm = TRUE) {
+#   sapply(dt_in, function(col) { sum(ifelse(col == value,1L,0L), na.rm = na.rm) }) }
 
 #' Counts and percentages table by a specified colname(s)
 #'

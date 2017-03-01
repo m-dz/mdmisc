@@ -14,10 +14,11 @@
 #' @export
 #'
 #' @examples mark_outliers_IQR(rnorm(20, 0, 1))
-mark_outliers_IQR <- function(x, na.rm = TRUE, quants = c(0.25, 0.75), ...) {
+mark_outliers_IQR <- function(x, na.rm = TRUE, quants = c(0.25, 0.75), return_params = FALSE, ...) {
   qnt <- quantile(unlist(x), probs = quants, na.rm = na.rm, ...)
   H <- 1.5 * IQR(unlist(x), na.rm = na.rm)
-  return(x < (qnt[1] - H) | x > (qnt[2] + H))
+  if(return_params) list(lower = (qnt[1] - H), upper = (qnt[2] + H))
+  else return(x < (qnt[1] - H) | x > (qnt[2] + H))
 }
 
 #' Find outliers using 0.01 and 0.99 quantiles
@@ -34,9 +35,10 @@ mark_outliers_IQR <- function(x, na.rm = TRUE, quants = c(0.25, 0.75), ...) {
 #' @export
 #'
 #' @examples mark_outliers_quant(rnorm(20, 0, 1))
-mark_outliers_quant <- function(x, na.rm = TRUE, quants = c(0.01, 0.99), ...) {
+mark_outliers_quant <- function(x, na.rm = TRUE, quants = c(0.01, 0.99), return_params = FALSE, ...) {
   qnt <- quantile(unlist(x), probs = quants, na.rm = na.rm, ...)
-  return(x < qnt[1] | x > qnt[2])
+  if(return_params) list(lower = (qnt[1]), upper = (qnt[2]))
+  else return(x < qnt[1] | x > qnt[2])
 }
 
 #' Find outliers using density based method

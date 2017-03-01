@@ -27,4 +27,3 @@ df <- data.frame(a = 1:3, b = 1:3, g = 1:3)
 reorder_vec(names(df), "g first")
 reorder_vec(names(df), "g first; a last")
 }
-

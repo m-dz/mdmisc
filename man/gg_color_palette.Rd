@@ -18,4 +18,3 @@ Recreate ggplot2 colour palette
 \examples{
 gg_color_palette(3)
 }
-

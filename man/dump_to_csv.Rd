@@ -17,4 +17,3 @@ dump_to_csv(dt, file_name = paste0(deparse(substitute(dt))),
 \description{
 Save data set to \code{dump_dir} folder
 }
-

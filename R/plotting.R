@@ -1,4 +1,78 @@
 
+
+
+#' Plots lift chart using binary target and model predictions
+#'
+#' @param target
+#' @param predictions
+#' @param breaks_no
+#' @param xlabel
+#' @param ylabel
+#' @param title
+#' @param file_name
+#' @param withCounts
+#' @param showPlot
+#' @param saveToFile
+#' @param returnPlot
+#'
+#' @return
+#' @export
+#' @import data.table
+#' @import ggplot2
+#' @importFrom magrittr '%>%'
+#'
+#' @examples
+plot_lift_chart <- function(target,
+                            predictions,
+                            breaks_no = 4,
+                            xlabel = "Predicted response",
+                            ylabel = "Actual conversion ratio",
+                            title = "Lift chart",
+                            file_name = "lift_chart",
+                            withCounts = FALSE,
+                            showPlot = TRUE,
+                            saveToFile = FALSE,
+                            returnPlot = FALSE)
+{
+  tab <- data.table(
+    Sale = target,
+    Pred = predictions,
+    PredBinned = Hmisc::cut2(predictions, g = breaks_no, levels.mean = TRUE)
+  ) %>% setnames(c("Sale", "Pred", "PredBinned"))
+  tab_summary <- tab[, list(ConvPerBin = sum(Sale)/.N*100, Count = .N), by = PredBinned]
+
+
+  if (withCounts) {
+    dummyTable1 <- tab_summary[, .(PredBinned, y = ConvPerBin)] %>% .[, DummyPanel := "1. Conversion [%]"]
+    dummyTable2 <- tab_summary[, .(PredBinned, y = Count)] %>% .[, DummyPanel := "2. Count"]
+    dummyTable <- rbind(dummyTable1, dummyTable2)
+
+    # ggplot(tab_summary) + geom_bar(aes(PredBinned, ConvPerBin), stat = "identity") + theme_light()
+    g <- ggplot(dummyTable) +
+      facet_grid(DummyPanel ~ ., scales = "free_y") +
+      geom_bar(aes(PredBinned, y), stat = "identity", position = "identity") +
+      theme_light() +
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+      # scale_fill_gradient(low = "#00abff", high = "#003f5e") +
+      labs(x = xlabel, title = title) +
+      theme(axis.title.y = element_blank()) +
+      theme(panel.grid.major.x = element_blank())
+  } else {
+    g <- ggplot(tab_summary) +
+      geom_bar(aes(PredBinned, ConvPerBin), stat = "identity") +
+      theme_light() +
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+      # scale_fill_gradient(low = "#00abff", high = "#003f5e") +
+      labs(x = xlabel, y = ylabel, title = title) +
+      theme(panel.grid.major.x = element_blank())
+  }
+  if (length(unique(tab_summary[, PredBinned])) > 35) g <- g + scale_x_discrete(breaks = NULL)
+  if (showPlot) print(g)
+  if (saveToFile) ggsave(paste0(file_name, ".pdf"), g, device = "pdf", width = 8.27, height = 5.83, units = "in")
+  if (returnPlot) return(g)
+}
+
+
 #
 #' Multiple plot function
 #'

@@ -15,4 +15,3 @@ Funtion returns the active file's path
 \examples{
 getActiveFilePath()
 }
-

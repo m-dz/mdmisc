@@ -18,9 +18,9 @@ setup_proxy <- function(file_path = 'F:/Marketing/Group Marketing/Database Marke
   if(!file.exists(file_path) & (is.null(url) | is.null(port) | is.null(username))) stop('Please provide a valid file_path or proxy settings.')
   if(file.exists(file_path)) {
     setup_values <- read.csv(file_path, stringsAsFactors = FALSE)
-    url = setup_values[1, 'url']
-    port = setup_values[1, 'port']
-    username = setup_values[1, 'username']
+    if(is.null(url))      url <- setup_values[1, 'url']
+    if(is.null(port))     port <- setup_values[1, 'port']
+    if(is.null(username)) username <- setup_values[1, 'username']
   }
   if(is.null(url) | is.null(port) | is.null(username)) {
     missing_args <- c('url', 'port', 'username')[c(is.null(url), is.null(port), is.null(username))]

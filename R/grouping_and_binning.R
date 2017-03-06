@@ -28,15 +28,15 @@
 #' group_by_threshold(dt, 'cat', cum_threshold = 0.2, return_data = TRUE, modify = TRUE)
 #' dt
 group_by_threshold <- function(dt,
-                          feature,
-                          threshold = NULL,
-                          cum_threshold = NULL,
-                          no_of_categories = NULL,
-                          return_data = FALSE,
-                          modify = FALSE,
-                          other_cat_name = 'OTHER') {
+                               feature,
+                               threshold = NULL,
+                               cum_threshold = NULL,
+                               no_of_categories = NULL,
+                               return_data = FALSE,
+                               modify = FALSE,
+                               other_cat_name = 'OTHER') {
   # Parameters check
-  if(isTRUE(return_data) & (sum(is.null(threshold), is.null(cum_threshold), is.null(no_of_categories)) == 2)) {
+  if(isTRUE(return_data) & (sum(is.null(threshold), is.null(cum_threshold), is.null(no_of_categories)) != 2)) {
     stop('Incorrect parameters.')
   }
   if(!isTRUE(return_data) & (sum(is.null(threshold), is.null(cum_threshold), is.null(no_of_categories)) < 2)) {

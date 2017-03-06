@@ -85,7 +85,7 @@ format_date_time <- function(date_time = Sys.time()) { gsub(' ','_',gsub('[-:]',
 
 #' Checks for an argument not being NA
 #'
-#' @param x
+#' @param x Input argument
 #'
 #' @return \code{Boolean} indicating whether x is not NA
 #' @export
@@ -95,7 +95,7 @@ is.not.na <- function(x) { !is.na(x) }
 
 #' Checks for an argument not being NULL
 #'
-#' @param x
+#' @param x Input argument
 #'
 #' @return \code{Boolean} indicating whether x is not NULL
 #' @export
@@ -120,8 +120,8 @@ single_microbenchmark <- function(expr, reps = 1) {
 
 #' Two way set difference
 #'
-#' @param first
-#' @param second
+#' @param first  Input argument
+#' @param second Input argument
 #'
 #' @return
 #' @export
@@ -133,24 +133,10 @@ setdiff_two_way <- function(first, second) {
     "Second" = setdiff(second, first))
 }
 
-#' Read password from specified file
-#'
-#' @param file Text file with password stored
-#'
-#' @return String with password
-#' @export
-#'
-#' @examples
-read_pass <- function(file_path) {
-  con = file(file_path, "r")
-  readLines(con, n = 1)
-  close(con)
-}
-
 #' Lists CSV files in the specified directory
 #'
-#' @param path
-#' @param full_names
+#' @param path       Path to directory
+#' @param full_names \code{logical}, passed to \code{full.names} of \code{list.files}
 #'
 #' @return List of CSV files in the directory
 #' @export

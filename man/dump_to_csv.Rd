@@ -4,16 +4,29 @@
 \alias{dump_to_csv}
 \title{Save data set to \code{dump_dir} folder}
 \usage{
-dump_to_csv(dt, file_name = paste0(deparse(substitute(dt))),
-  dump_dir = "C:/Users/dziedzm/Desktop/temp_file_dump")
+dump_to_csv(dt, file_name = NULL, dump_dir = NULL, ...)
 }
 \arguments{
-\item{dt}{Data set to save}
+\item{dt}{Data to save}
 
 \item{file_name}{File name}
 
-\item{dump_dir}{Folder}
+\item{dump_dir}{Folder directory}
+
+\item{...}{Arguments passed to \code{data.table::fwrite} function}
 }
 \description{
-Save data set to \code{dump_dir} folder
+Warning: Conversion to \code{data.frame} tested only from \code{matrix}
+}
+\examples{
+x <- data.frame(A = c(1:3), B = letters[1:3])
+dump_to_csv(x)
+dump_to_csv(data.frame(A = c(1:3), B = letters[1:3]))
+dump_to_csv(data.frame(A = c(1:3), B = letters[1:3]), file_name = 'a.csv')
+# Conversion to data.frame:
+dump_to_csv(as.matrix(c(1:4)))
+# Errors:
+dump_to_csv(x, file_name = ':a.csv')
+dump_to_csv(data.frame(A = c(1:3), B = letters[1:3]), file_name = ':a.csv')
+# Not run: other scenarios not tested!
 }

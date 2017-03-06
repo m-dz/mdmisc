@@ -7,7 +7,9 @@
 list_csv_files(path = ".", full_names = FALSE)
 }
 \arguments{
-\item{full_names}{}
+\item{path}{Path to directory}
+
+\item{full_names}{\code{logical}, passed to \code{full.names} of \code{list.files}}
 }
 \value{
 List of CSV files in the directory

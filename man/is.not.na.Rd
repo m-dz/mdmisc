@@ -7,7 +7,7 @@
 is.not.na(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{Input argument}
 }
 \value{
 \code{Boolean} indicating whether x is not NA

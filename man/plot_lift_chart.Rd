@@ -4,13 +4,14 @@
 \alias{plot_lift_chart}
 \title{Plots lift chart using binary target and model predictions}
 \usage{
-plot_lift_chart(target, predictions, breaks_no = 4,
+plot_lift_chart(target, predictions, breaks_no = 4, cut_by_volume = FALSE,
   xlabel = "Predicted response", ylabel = "Actual conversion ratio",
-  title = "Lift chart", file_name = "lift_chart", withCounts = FALSE,
-  showPlot = TRUE, saveToFile = FALSE, returnPlot = FALSE)
+  title = "Lift chart", file_name = "lift_chart.svg",
+  plot_volumes = FALSE, show_plot = TRUE, save_to_file = FALSE,
+  return_plot = FALSE)
 }
 \arguments{
-\item{returnPlot}{}
+\item{return_plot}{}
 }
 \description{
 Plots lift chart using binary target and model predictions

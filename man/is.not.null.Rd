@@ -7,7 +7,7 @@
 is.not.null(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{Input argument}
 }
 \value{
 \code{Boolean} indicating whether x is not NULL

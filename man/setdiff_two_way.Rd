@@ -7,7 +7,9 @@
 setdiff_two_way(first, second)
 }
 \arguments{
-\item{second}{}
+\item{first}{Input argument}
+
+\item{second}{Input argument}
 }
 \description{
 Two way set difference

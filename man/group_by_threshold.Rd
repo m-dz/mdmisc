@@ -2,7 +2,7 @@
 % Please edit documentation in R/grouping_and_binning.R
 \name{group_by_threshold}
 \alias{group_by_threshold}
-\title{Title}
+\title{Group categories by (cumulative) frequencies}
 \usage{
 group_by_threshold(dt, feature, threshold = NULL, cum_threshold = NULL,
   no_of_categories = NULL, return_data = FALSE, modify = FALSE,
@@ -12,7 +12,7 @@ group_by_threshold(dt, feature, threshold = NULL, cum_threshold = NULL,
 \item{other_cat_name}{}
 }
 \description{
-Title
+Group categories by (cumulative) frequencies
 }
 \examples{
 set.seed(2016)

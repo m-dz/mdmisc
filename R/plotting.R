@@ -10,10 +10,10 @@
 #' @param ylabel
 #' @param title
 #' @param file_name
-#' @param withCounts
-#' @param showPlot
-#' @param saveToFile
-#' @param returnPlot
+#' @param plot_volumes
+#' @param show_plot
+#' @param save_to_file
+#' @param return_plot
 #'
 #' @return
 #' @export
@@ -25,24 +25,25 @@
 plot_lift_chart <- function(target,
                             predictions,
                             breaks_no = 4,
+                            cut_by_volume = FALSE,
                             xlabel = "Predicted response",
                             ylabel = "Actual conversion ratio",
                             title = "Lift chart",
-                            file_name = "lift_chart",
-                            withCounts = FALSE,
-                            showPlot = TRUE,
-                            saveToFile = FALSE,
-                            returnPlot = FALSE)
+                            file_name = "lift_chart.svg",
+                            plot_volumes = FALSE,
+                            show_plot = TRUE,
+                            save_to_file = FALSE,
+                            return_plot = FALSE)
 {
   tab <- data.table(
     Sale = target,
     Pred = predictions,
-    PredBinned = Hmisc::cut2(predictions, g = breaks_no, levels.mean = TRUE)
+    PredBinned = if(cut_by_volume) cut(predictions, breaks = breaks_no) else Hmisc::cut2(predictions, g = breaks_no, levels.mean = TRUE)
   ) %>% setnames(c("Sale", "Pred", "PredBinned"))
   tab_summary <- tab[, list(ConvPerBin = sum(Sale)/.N*100, Count = .N), by = PredBinned]
 
 
-  if (withCounts) {
+  if (plot_volumes) {
     dummyTable1 <- tab_summary[, .(PredBinned, y = ConvPerBin)] %>% .[, DummyPanel := "1. Conversion [%]"]
     dummyTable2 <- tab_summary[, .(PredBinned, y = Count)] %>% .[, DummyPanel := "2. Count"]
     dummyTable <- rbind(dummyTable1, dummyTable2)
@@ -67,9 +68,9 @@ plot_lift_chart <- function(target,
       theme(panel.grid.major.x = element_blank())
   }
   if (length(unique(tab_summary[, PredBinned])) > 35) g <- g + scale_x_discrete(breaks = NULL)
-  if (showPlot) print(g)
-  if (saveToFile) ggsave(paste0(file_name, ".pdf"), g, device = "pdf", width = 8.27, height = 5.83, units = "in")
-  if (returnPlot) return(g)
+  if (show_plot) print(g)
+  if (save_to_file) ggsave(paste0(file_name), g, width = 297, height = 210, units = "mm")
+  if (return_plot) return(g)
 }
 
 

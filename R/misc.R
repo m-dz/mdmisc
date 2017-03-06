@@ -194,16 +194,59 @@ sorted_names <- function(obj) {
 
 #' Save data set to \code{dump_dir} folder
 #'
-#' @param dt        Data set to save
+#' Warning: Conversion to \code{data.frame} tested only from \code{matrix}
+#'
+#' @param dt        Data to save
 #' @param file_name File name
-#' @param dump_dir  Folder
+#' @param dump_dir  Folder directory
+#' @param ...       Arguments passed to \code{data.table::fwrite} function
 #'
 #' @return
 #' @export
+#' @importFrom data.table fwrite
 #'
 #' @examples
-dump_to_csv <- function(dt, file_name = paste0(deparse(substitute(dt))),
-                        dump_dir = "C:/Users/dziedzm/Desktop/temp_file_dump") {
-  write.csv(dt, file = file.path(dump_dir, paste0(file_name, ".csv")),
-            row.names = FALSE)
+#' x <- data.frame(A = c(1:3), B = letters[1:3])
+#' dump_to_csv(x)
+#' dump_to_csv(data.frame(A = c(1:3), B = letters[1:3]))
+#' dump_to_csv(data.frame(A = c(1:3), B = letters[1:3]), file_name = 'a.csv')
+#' # Conversion to data.frame:
+#' dump_to_csv(as.matrix(c(1:4)))
+#' # Errors:
+#' dump_to_csv(x, file_name = ':a.csv')
+#' dump_to_csv(data.frame(A = c(1:3), B = letters[1:3]), file_name = ':a.csv')
+#' # Not run: other scenarios not tested!
+dump_to_csv <- function(dt, file_name = NULL, dump_dir = NULL, ...) {
+  if(is.null(file_name)) {
+    obj_name <- paste0(deparse(substitute(dt)))
+    if(exists(obj_name)) file_name <- paste0(obj_name, '.csv') else file_name <- 'temp.csv'
+  }
+  if(is.null(dump_dir)) dump_dir <- file.path(path.expand('~'), 'Desktop/temp_file_dump')
+  if(!is.data.frame(dt)) {
+    warning('Object is not a valid fwrite input, converting to a data.frame')
+    dt <- as.data.frame(dt)
+  }
+  tryCatch(
+    fwrite(dt, file = file.path(dump_dir, file_name), ...),
+    warning = function(w) warning(w), error = function(e) stop(e)
+  ) # END tryCatch
 }
+
+# #' Title
+# #'
+# #' @return
+# #' @export
+# #' @importFrom httr reset_config reset_config use_proxy
+# #'
+# #' @examples
+# setup_proxy <- function(url = NULL, port = NULL, username = NULL, password = NULL) {
+#   reset_config()
+#   set_config(
+#     use_proxy(
+#       url = url,
+#       port = port,
+#       username = username,
+#       password = password
+#     )
+#   )
+# }

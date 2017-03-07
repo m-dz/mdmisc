@@ -15,17 +15,29 @@ group_by_threshold(dt, feature, threshold = NULL, cum_threshold = NULL,
 Group categories by (cumulative) frequencies
 }
 \examples{
+library(mdmisc)
 set.seed(2016)
 dt <- data.table::data.table('cat' = sample(letters[1:10], 20, replace = TRUE), 'cont' = rnorm(20))
 
-# View cumulative frequencies
+## View cumulative frequencies
 group_by_threshold(dt, 'cat')
+group_by_threshold(dt, 'cat', threshold = 0.10)
+group_by_threshold(dt, 'cat', cum_threshold = 0.90)
+group_by_threshold(dt, 'cat', no_of_categories = 3)
 
-# Group bottom 20\\\% categories based on cumulative frequency
-dt_mod <- group_by_threshold(dt, 'cat', cum_threshold = 0.2, return_data = TRUE)
-dt_mod
+## Group categories below 10\\\% of frequency
+dt_mod <- group_by_threshold(dt, 'cat', threshold = 0.10, return_data = TRUE)
+group_by_threshold(dt_mod, 'cat')
 
-# Group and modify in place
+## Group bottom 10\\\% categories based on cumulative frequency
+dt_mod <- group_by_threshold(dt, 'cat', cum_threshold = 0.90, return_data = TRUE)
+group_by_threshold(dt_mod, 'cat')
+
+## Leave 3 categories based on frequency
+dt_mod <- group_by_threshold(dt, 'cat', no_of_categories = 3, return_data = TRUE)
+group_by_threshold(dt_mod, 'cat')
+
+## Group and modify in place
 group_by_threshold(dt, 'cat', cum_threshold = 0.2, return_data = TRUE, modify = TRUE)
 dt
 }

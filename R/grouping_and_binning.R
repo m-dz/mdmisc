@@ -78,8 +78,8 @@ group_by_threshold <- function(dt,
       return(dt)
     }
   } else {
-    if(mdmisc::is.not.null(threshold))             return(freq_tab[, ToGroup := !(PCT    <= (threshold))][])
-    else if(mdmisc::is.not.null(cum_threshold))    return(freq_tab[, ToGroup := !(CumPCT <= (1 - cum_threshold))][])
+    if(mdmisc::is.not.null(threshold))             return(freq_tab[, ToGroup := (PCT    <= (threshold))][])
+    else if(mdmisc::is.not.null(cum_threshold))    return(freq_tab[, ToGroup := (CumPCT >= (cum_threshold))][])
     else if(mdmisc::is.not.null(no_of_categories)) return(freq_tab[, ToGroup := c(rep(FALSE, no_of_categories), rep(TRUE, .N - no_of_categories))][])
     else return(freq_tab)
   }

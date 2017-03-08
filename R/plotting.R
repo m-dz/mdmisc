@@ -1,5 +1,59 @@
 
-
+#' Plots binary outcome
+#'
+#' Plots binary outcome, use for binary models outcomes etc.
+#'
+#' @param df              Data
+#' @param pred_name       Predictions' column name
+#' @param actual_name     Actual values' column name
+#' @param x_lab           X-axis label
+#' @param y_lab           Y-axis label
+#' @param theme           Theme function to use
+#' @param type            Plot type, \code{type = c('pipes', 'jitter')}
+#' @param smooth          Logical, whether plot smoothing line or not
+#' @param smoothing_level If \code{smooth == TRUE} the smoothing level, otherwise ignored
+#'
+#' @return Plot object
+#' @export
+#'
+#' @examples
+#' df <- data.frame(
+#'   actual = c(1,1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0),
+#'   predicted = seq(1, 0, length.out = 40)
+#' )
+#' plot_binary_outcome(df, 'predicted', 'actual')
+#' plot_binary_outcome(df, 'predicted', 'actual', smoothing_level = 0.75)
+#' plot_binary_outcome(df, 'predicted', 'actual', x_lab = 'Predicted', y_lab = 'Actual')
+#' plot_binary_outcome(df, 'predicted', 'actual', theme = theme_bw())
+#' plot_binary_outcome(df, 'predicted', 'actual', type = 'pipes', theme = theme_bw())
+#' plot_binary_outcome(df, 'predicted', 'actual', type = 'jitter', theme = theme_bw())
+plot_binary_outcome <- function(
+  df,
+  pred_name,
+  actual_name,
+  x_lab = NULL,
+  y_lab = NULL,
+  theme = NULL,
+  type = 'pipes',
+  smooth = TRUE,
+  smoothing_level = NA)
+{
+  if(is.null(x_lab)) x_lab <- pred_name
+  if(is.null(y_lab)) y_lab <- actual_name
+  g <- ggplot(df, aes_string(x = pred_name, y = actual_name)) +
+    xlab(x_lab) +
+    ylab(y_lab) +
+    coord_cartesian(ylim = c(0, 1))
+  # Add point markers
+  g <- g + switch(
+    type,
+    pipes = geom_point(size = 4, alpha = 1, shape = 124),
+    jitter = geom_jitter(size = 2, alpha = 0.4, position = position_jitter(height = .02)))
+  # Smoothing and theme
+  if(mdmisc::is.not.null(smooth)) g <- g + stat_smooth(method = "loess", colour = "blue", size = 0.5, level = smoothing_level)
+  if(mdmisc::is.not.null(theme)) g <- g + theme
+  return(g)
+}
 
 #' Plots lift chart using binary target and model predictions
 #'
@@ -22,18 +76,19 @@
 #' @importFrom magrittr '%>%'
 #'
 #' @examples
-plot_lift_chart <- function(target,
-                            predictions,
-                            breaks_no = 4,
-                            cut_by_volume = FALSE,
-                            xlabel = "Predicted response",
-                            ylabel = "Actual conversion ratio",
-                            title = "Lift chart",
-                            file_name = "lift_chart.svg",
-                            plot_volumes = FALSE,
-                            show_plot = TRUE,
-                            save_to_file = FALSE,
-                            return_plot = FALSE)
+plot_lift_chart <- function(
+  target,
+  predictions,
+  breaks_no = 4,
+  cut_by_volume = FALSE,
+  xlabel = "Predicted response",
+  ylabel = "Actual conversion ratio",
+  title = "Lift chart",
+  file_name = "lift_chart.svg",
+  plot_volumes = FALSE,
+  show_plot = TRUE,
+  save_to_file = FALSE,
+  return_plot = FALSE)
 {
   tab <- data.table(
     Sale = target,

@@ -1,4 +1,56 @@
 
+
+#' Normalized Gini score
+#'
+#' Normalized Gini score for binary outcome modelling
+#'
+#' Based on \link{https://www.kaggle.com/wiki/RCodeForGini}
+#'
+#' @param actual      Actual outcome
+#' @param predictions Predicted outcome
+#'
+#' @return Normalized Gini score
+#' @export
+#'
+#' @examples
+#' df <- data.frame(
+#'   actual = c(1,1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0),
+#'   predicted = seq(1, 0, length.out = 40)
+#' )
+#' gini_val <- gini_norm(df[, 'actual'], df[, 'predicted'])
+#' ## Compare to AUC from pROC package
+#' # AUC_val <- pROC::roc(df[, 'actual'], df[, 'predicted'])$auc
+#' # gini_val == 2 * AUC_val - 1
+gini_norm <- function(actual, predictions) {
+  gini(actual, predictions) / gini(actual, actual)
+}
+
+#' Gini score
+#'
+#' Gini score for binary outcome modelling
+#' (rather use normalized version: mdmisc::gini_norm())
+#'
+#' Based on \link{https://www.kaggle.com/wiki/RCodeForGini}
+#'
+#' @param actual      Actual outcome
+#' @param predictions Predicted outcome
+#'
+#' @return Gini score
+#' @export
+#'
+#' @examples
+gini <- function(actual, predictions) {
+  if (length(actual) !=  length(predictions)) stop("Actual and Predicted need to be equal lengths!")
+  df <- data.frame(actual = actual, pred = predictions, range = c(1:length(actual)))
+  df <- df[order(-df$pred, df$range),]
+  population.delta <- 1 / length(actual)
+  total_losses <- sum(actual)
+  null_losses <- rep(population.delta, length(actual)) # Hopefully is similar to accumulatedPopulationPercentageSum
+  accum_losses <- df$actual / total_losses # Hopefully is similar to accumulatedLossPercentageSum
+  gini.sum <- cumsum(accum_losses - null_losses) # Not sure if this is having the same effect or not
+  sum(gini.sum) / length(actual)
+}
+
 #' Returns \code{data.table} with coefficients from a \code{glmnet} model
 #'
 #' For \code{caret} package see examples.

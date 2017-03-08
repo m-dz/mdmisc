@@ -38,6 +38,6 @@ dt_mod <- group_by_threshold(dt, 'cat', no_of_categories = 3, return_data = TRUE
 group_by_threshold(dt_mod, 'cat')
 
 ## Group and modify in place
-group_by_threshold(dt, 'cat', cum_threshold = 0.2, return_data = TRUE, modify = TRUE)
-dt
+group_by_threshold(dt, 'cat', threshold = 0.1, return_data = TRUE, modify = TRUE)
+group_by_threshold(dt, 'cat')
 }

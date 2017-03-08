@@ -25,10 +25,10 @@ test_that("cumulative frequencies and cuts are calculated correctly", {
     c(0.25, 0.40, 0.55, 0.70, 0.80, 0.90, 0.95, 1.00))
   expect_equal(
     group_by_threshold(dt, 'cat', threshold = 0.1)[['ToGroup']],
-    c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE))
+    c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE))
   expect_equal(
     group_by_threshold(dt, 'cat', cum_threshold = 0.3)[['ToGroup']],
-    c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE))
+    c(FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE))
   expect_equal(
     group_by_threshold(dt, 'cat', no_of_categories = 5)[['ToGroup']],
     c(FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE))

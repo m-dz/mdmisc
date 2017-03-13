@@ -2,6 +2,7 @@
 
 export(PlotCorrCont)
 export(check_features_match_glm)
+export(clean_memory)
 export(clear_console)
 export(copy_from_clipboard)
 export(count_NAs)

@@ -4,9 +4,7 @@
 \alias{setup_proxy}
 \title{Setup proxy settings}
 \usage{
-
-  setup_proxy(file_path = "F:/Marketing/Group Marketing/Database Marketing/Marketing Analytics/Personal/Mateusz/00 DandG proxy settings/proxy_settings.csv",
-  url = NULL, port = NULL, username = NULL,
+setup_proxy(file_path = NULL, url = NULL, port = NULL, username = NULL,
   password = getPass::getPass())
 }
 \arguments{
@@ -19,11 +17,14 @@
 \item{password}{Proxy password}
 }
 \value{
-\code{TRUE}
+\code{TRUE} if successful.
 }
 \description{
 Setup proxy settings
 }
 \examples{
-mdmisc::setup_proxy() # Runs with default file_path
+setup_proxy(url = "1.1.1.1", port = 1111, username = "domain//username")
+## Not run: file template
+##       url, port,           username
+## "1.1.1.1", 1111, "domain//username"
 }

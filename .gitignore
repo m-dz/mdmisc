@@ -4,3 +4,6 @@
 .RData
 .RDataTmp
 .Ruserdata
+
+# Workaround for the Rplots.pdf file...
+tests/testthat/Rplots.pdf

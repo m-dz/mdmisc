@@ -29,7 +29,7 @@ test_that('plot_binary_outcome throws an error when column not in data', {
   )
 
   expect_error(
-    plot(plot_binary_outcome(df, 'predicted', 'not_in_df')),
+    plot(plot_binary_outcome(df, 'predicted', 'not_in_df')),  # Creates Rplot.pdf, same for print()
     regexp = "object 'not_in_df' not found"
   )
 })

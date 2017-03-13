@@ -1,4 +1,12 @@
 
+#' Clean memory by running \code{gc()} n times.
+#'
+#' @param n Defaults to 10.
+#'
+#' @return
+#' @export
+clean_memory <- function(n=10) { for (i in 1:n) gc() }
+
 #' Setup proxy settings
 #'
 #' @param url      Proxy url
@@ -6,15 +14,17 @@
 #' @param username Proxy username
 #' @param password Proxy password
 #'
-#' @return \code{TRUE}
+#' @return \code{TRUE} if successful.
 #' @export
 #' @importFrom httr reset_config set_config use_proxy
 #' @importFrom getPass getPass
 #'
 #' @examples
-#' mdmisc::setup_proxy() # Runs with default file_path
-setup_proxy <- function(file_path = 'F:/Marketing/Group Marketing/Database Marketing/Marketing Analytics/Personal/Mateusz/00 DandG proxy settings/proxy_settings.csv',
-                        url = NULL, port = NULL, username = NULL, password = getPass::getPass()) {
+#' setup_proxy(url = "1.1.1.1", port = 1111, username = "domain//username")
+#' ## Not run: file template
+#' ##       url, port,           username
+#' ## "1.1.1.1", 1111, "domain//username"
+setup_proxy <- function(file_path = NULL, url = NULL, port = NULL, username = NULL, password = getPass::getPass()) {
   if(!file.exists(file_path) & (is.null(url) | is.null(port) | is.null(username))) stop('Please provide a valid file_path or proxy settings.')
   if(file.exists(file_path)) {
     setup_values <- read.csv(file_path, stringsAsFactors = FALSE)

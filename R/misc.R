@@ -241,22 +241,3 @@ dump_to_csv <- function(dt, file_name = NULL, dump_dir = NULL, ...) {
     warning = function(w) warning(w), error = function(e) stop(e)
   ) # END tryCatch
 }
-
-# #' Title
-# #'
-# #' @return
-# #' @export
-# #' @importFrom httr reset_config reset_config use_proxy
-# #'
-# #' @examples
-# setup_proxy <- function(url = NULL, port = NULL, username = NULL, password = NULL) {
-#   reset_config()
-#   set_config(
-#     use_proxy(
-#       url = url,
-#       port = port,
-#       username = username,
-#       password = password
-#     )
-#   )
-# }

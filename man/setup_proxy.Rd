@@ -4,8 +4,8 @@
 \alias{setup_proxy}
 \title{Setup proxy settings}
 \usage{
-setup_proxy(file_path = NULL, url = NULL, port = NULL, username = NULL,
-  password = getPass::getPass())
+setup_proxy(file_path = NA_character_, url = NULL, port = NULL,
+  username = NULL, password = getPass::getPass())
 }
 \arguments{
 \item{url}{Proxy url}

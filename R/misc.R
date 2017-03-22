@@ -5,7 +5,7 @@
 #'
 #' @return
 #' @export
-clean_memory <- function(n=10) { for (i in 1:n) gc() }
+clean_memory <- function(n = 10) { for (i in 1:n) gc() }
 
 #' Setup proxy settings
 #'

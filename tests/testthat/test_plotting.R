@@ -33,5 +33,3 @@ test_that('plot_binary_outcome throws an error when column not in data', {
     regexp = "object 'not_in_df' not found"
   )
 })
-
-

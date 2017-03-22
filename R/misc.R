@@ -24,7 +24,7 @@ clean_memory <- function(n=10) { for (i in 1:n) gc() }
 #' ## Not run: file template
 #' ##       url, port,           username
 #' ## "1.1.1.1", 1111, "domain//username"
-setup_proxy <- function(file_path = NULL, url = NULL, port = NULL, username = NULL, password = getPass::getPass()) {
+setup_proxy <- function(file_path = NA_character_, url = NULL, port = NULL, username = NULL, password = getPass::getPass()) {
   if(!file.exists(file_path) & (is.null(url) | is.null(port) | is.null(username))) stop('Please provide a valid file_path or proxy settings.')
   if(file.exists(file_path)) {
     setup_values <- read.csv(file_path, stringsAsFactors = FALSE)

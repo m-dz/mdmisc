@@ -1,4 +1,12 @@
 
+#' Clear warnings' list
+#'
+#' http://stackoverflow.com/a/5725180/4272484
+#'
+#' @return Nothing
+#' @export
+clear_warnings <- function() { assign("last.warning", NULL, envir = baseenv()) }
+
 #' Clean memory by running \code{gc()} n times.
 #'
 #' @param n Defaults to 10.

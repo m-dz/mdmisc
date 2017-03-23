@@ -111,8 +111,10 @@ plot_cor_cont <- function(dt, print = TRUE) {
 #' extract_cont_cols(dt, exclude = 'V3')
 #' dt
 extract_cont_cols <- function(dt, exclude = NA) {
+  ### TODO: Check which one is faster?
   cols_cont <- sapply(dt, function(x) (is.numeric(x))) & !(names(dt) %in% exclude)
-  dt[ , cols_cont, with = FALSE]
+  # dt[ , cols_cont, with = FALSE]
+  dt[ , .SD, .SDcols = cols_cont]
 }
 
 #' Title
@@ -157,7 +159,7 @@ extract_cat_cols <- function(dt, levels_max = NULL, levels_min = 1, exclude = NA
       sapply(dt, fun),
       names(dt) %in% exclude
     )
-  dt[ , cols_cat, with = FALSE]
+  dt[ , .SD, .SDcols = cols_cat]
 }
 ### TODO: Test with data.table and data.frame
 ### TODO: Factors?

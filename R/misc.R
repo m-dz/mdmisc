@@ -12,7 +12,6 @@ clean_memory <- function(n = 10) { for (i in 1:n) gc() }
 #' @param url      Proxy url
 #' @param port     Proxy port
 #' @param username Proxy username
-#' @param password Proxy password
 #'
 #' @return \code{TRUE} if successful.
 #' @export
@@ -24,7 +23,7 @@ clean_memory <- function(n = 10) { for (i in 1:n) gc() }
 #' ## Not run: file template
 #' ##       url, port,           username
 #' ## "1.1.1.1", 1111, "domain//username"
-setup_proxy <- function(file_path = NA_character_, url = NULL, port = NULL, username = NULL, password = getPass::getPass()) {
+setup_proxy <- function(file_path = NA_character_, url = NULL, port = NULL, username = NULL) {
   if(!file.exists(file_path) & (is.null(url) | is.null(port) | is.null(username))) stop('Please provide a valid file_path or proxy settings.')
   if(file.exists(file_path)) {
     setup_values <- read.csv(file_path, stringsAsFactors = FALSE)
@@ -36,10 +35,11 @@ setup_proxy <- function(file_path = NA_character_, url = NULL, port = NULL, user
     missing_args <- c('url', 'port', 'username')[c(is.null(url), is.null(port), is.null(username))]
     stop(paste0('Arguments: ', paste(missing_args, collapse = ', '), ' missing.'))
   }
+  pass_message <- paste0('Password for ', username, ':')
   message(paste0('Setting up proxy with the following parameters: url = ', url, ', port = ', port, ', username = ', username))
   reset_config()
   set_config(
-    use_proxy(url, port, username, password)
+    use_proxy(url, port, username, getPass::getPass(msg = pass_message))
   )
   return(TRUE)
 }

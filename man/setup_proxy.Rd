@@ -5,7 +5,7 @@
 \title{Setup proxy settings}
 \usage{
 setup_proxy(file_path = NA_character_, url = NULL, port = NULL,
-  username = NULL, password = getPass::getPass())
+  username = NULL)
 }
 \arguments{
 \item{url}{Proxy url}
@@ -13,8 +13,6 @@ setup_proxy(file_path = NA_character_, url = NULL, port = NULL,
 \item{port}{Proxy port}
 
 \item{username}{Proxy username}
-
-\item{password}{Proxy password}
 }
 \value{
 \code{TRUE} if successful.

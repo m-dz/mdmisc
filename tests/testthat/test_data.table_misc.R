@@ -1,6 +1,13 @@
 
 context("Test data.table_misc.R functions from mdmisc package")
 
+test_that('leave_cols is working and expected', {
+  require(data.table)
+  dt <- data.table(a = 1:3, b = 1:3, g = 1:3)
+  expect_equal(leave_cols(dt, c('a', 'b')), dt[, .(a, b)])
+  expect_equal(leave_cols(dt, c('a')), dt[, .(a)])
+})
+
 test_that("reorder_vec is working as expected", {
   df <- data.frame(a = 1:3, b = 1:3, g = 1:3)
   expect_equal(reorder_vec(c("a", "b", "g"), "g first"), c("g", "a", "b"))

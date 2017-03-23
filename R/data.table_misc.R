@@ -95,6 +95,21 @@ sample_and_replace_value <- function(dt, pct, col_name, value, grouping = NULL, 
   if(sort) setorderv(dt, grouping) else dt
 }
 
+#' Leave selected columns in input \code{data.table}
+#'
+#' @param dt        Input \code{data.table}
+#' @param col_names Column names to leave
+#' @param modify    Logical, whether to modify dt or return copy
+#'
+#' @return Modified dt (if \code{modify == TRUE}) or copy of dt with removed columns
+#' @export
+#'
+#' @examples
+leave_cols <- function(dt, col_names, modify = FALSE, print = TRUE) {
+  drop_names <- setdiff(names(dt), col_names)
+  drop_cols(dt, drop_names, modify = FALSE)
+}
+
 #'
 #' Drop columns in \code{data.table} by reference or returning a copy.
 #'

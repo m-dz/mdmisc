@@ -6,7 +6,7 @@
 #' @param from Origin file path
 #' @param to   Destination file path
 #'
-#' @return
+#' @return See \code{file.copy}
 #' @export
 file_copy_with_dir_create <- function(from, to) {
   todir <- dirname(to)
@@ -21,7 +21,7 @@ file_copy_with_dir_create <- function(from, to) {
 #' @param from Origin file path
 #' @param to   Destination file path
 #'
-#' @return
+#' @return See \code{file.copy}
 #' @export
 file_move_with_dir_create <- function(from, to) {
   todir <- dirname(to)

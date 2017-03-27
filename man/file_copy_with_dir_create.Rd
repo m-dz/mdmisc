@@ -11,6 +11,9 @@ file_copy_with_dir_create(from, to)
 
 \item{to}{Destination file path}
 }
+\value{
+See \code{file.copy}
+}
 \description{
 http://stackoverflow.com/a/10268255/4272484
 }

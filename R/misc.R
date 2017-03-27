@@ -1,4 +1,19 @@
 
+#' Move file and create dir if needed
+#'
+#' http://stackoverflow.com/a/10268255/4272484
+#'
+#' @param from Origin file path
+#' @param to   Destination file path
+#'
+#' @return
+#' @export
+file_rename_with_dir_create <- function(from, to) {
+  todir <- dirname(to)
+  if (!isTRUE(file.info(todir)$isdir)) dir.create(todir, recursive = TRUE)
+  file.rename(from = from, to = to)
+}
+
 #' Clear warnings' list
 #'
 #' http://stackoverflow.com/a/5725180/4272484

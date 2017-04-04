@@ -274,6 +274,10 @@ dump_to_csv <- function(dt, file_name = NULL, dump_dir = NULL, ...) {
     warning('Object is not a valid fwrite input, converting to a data.frame')
     dt <- as.data.frame(dt)
   }
+  if(!dir.exists(dump_dir)) {
+    message('Creating firectory')
+    dir.create(dump_dir)
+  }
   tryCatch(
     fwrite(dt, file = file.path(dump_dir, file_name), ...),
     warning = function(w) warning(w), error = function(e) stop(e)

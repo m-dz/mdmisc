@@ -53,8 +53,6 @@ clean_memory <- function(n = 10) { for (i in 1:n) gc() }
 #'
 #' @return \code{TRUE} if successful.
 #' @export
-#' @importFrom httr reset_config set_config use_proxy
-#' @importFrom getPass getPass
 #'
 #' @examples
 #' setup_proxy(url = "1.1.1.1", port = 1111, username = "domain//username")
@@ -75,9 +73,9 @@ setup_proxy <- function(file_path = NA_character_, url = NULL, port = NULL, user
   }
   pass_message <- paste0('Password for ', username, ':')
   message(paste0('Setting up proxy with the following parameters: url = ', url, ', port = ', port, ', username = ', username))
-  reset_config()
-  set_config(
-    use_proxy(url, port, username, getPass::getPass(msg = pass_message))
+  httr::reset_config()
+  httr::set_config(
+    httr::use_proxy(url, port, username, getPass::getPass(msg = pass_message))
   )
   return(TRUE)
 }
@@ -102,23 +100,6 @@ rm_all_exc_func <- function(ask = TRUE) {
       ls(envir = parent.frame()),
       lsf.str(envir = parent.frame())),
     envir = parent.frame()) else message('Quitting without removal.')
-}
-
-#' Simple wrapper for \code{pacman::p_load}
-#'
-#' Function name matches the first characters of \code{library}
-#'
-#' @param package
-#'
-#' @return None (invisible NULL).
-#' @export
-#' @importFrom pacman p_load
-#'
-#' @examples
-#' lib_pacman(ggplot2)
-#' lib_pacman('ggplot2')
-lib_pacman <- function(package) {
-  p_load(char = as.character(substitute(package)))
 }
 
 #' Formats \code{POSIXct} (e.g. \code{Sys.time()}) object to YYYYMMDD_HHMMSS string
@@ -158,7 +139,6 @@ is.not.null <- function(x) { !is.null(x) }
 #'
 #' @return Object created and benchmark results.
 #' @export
-#' @importFrom microbenchmark microbenchmark
 #'
 #' @examples
 #'
@@ -198,7 +178,6 @@ list_csv_files <- function(path = '.', full_names = FALSE) {
 #'
 #' @return Active file's path
 #' @export
-#' @importFrom rstudioapi getActiveDocumentContext
 #'
 #' @examples getActiveFilePath()
 get_active_file_path <- function() {
@@ -251,7 +230,7 @@ sorted_names <- function(obj) {
 #'
 #' @return
 #' @export
-#' @importFrom data.table fwrite
+#' @import data.table
 #'
 #' @examples
 #' x <- data.frame(A = c(1:3), B = letters[1:3])

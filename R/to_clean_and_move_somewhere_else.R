@@ -7,8 +7,7 @@
 #' @return
 #' @export
 #' @import data.table
-#' @importFrom magrittr '%>%'
-#' @importFrom ggcorrplot ggcorrplot
+#' @import magrittr
 #'
 #' @examples
 #' library(data.table); library(magrittr)
@@ -24,7 +23,7 @@ plot_cor_cat <- function(dt, levels_max = 1000, print = TRUE, simulate.p.value =
   rownames(cramerV) <- colnames(cramerV)
   chiSqP <- dcast(names_grid, x ~ y, value.var = "chiSqP") %>% .[ , x := NULL] %>% as.matrix()
   rownames(chiSqP) <- colnames(chiSqP)
-  g <- ggcorrplot(
+  g <- ggcorrplot::ggcorrplot(
     cramerV, # hc.order = TRUE, p.mat = p.mat, insig = "pch"
     type = "lower",
     outline.color = "white",
@@ -60,10 +59,8 @@ plot_cor_cat <- function(dt, levels_max = 1000, print = TRUE, simulate.p.value =
 #'
 #' @return
 #' @export
-#' @import ggcorrplot
-#' @import ggplot2
 #' @import data.table
-#' @importFrom magrittr "%>%"
+#' @import magrittr
 #'
 #' @examples
 #' library(data.table); library(magrittr)
@@ -72,13 +69,13 @@ plot_cor_cat <- function(dt, levels_max = 1000, print = TRUE, simulate.p.value =
 plot_cor_cont <- function(dt, print = TRUE) {
   calc_cor <- function(dt) list(
     corr = dt %>% na.omit() %>% cor() %>% round(2),
-    p.mat = dt %>% na.omit() %>% cor_pmat())
+    p.mat = dt %>% na.omit() %>% ggcorrplot::cor_pmat())
   ls <- dt %>%
     extract_cont_cols() %>%
     calc_cor()
   # corr <- dt %>% na.omit() %>% cor() %>% round(2)
-  # p.mat <- dt %>% na.omit() %>% cor_pmat()
-  g <- ggcorrplot(
+  # p.mat <- dt %>% na.omit() %>% ggcorrplot::cor_pmat()
+  g <- ggcorrplot::ggcorrplot(
     ls[['corr']], # hc.order = TRUE, p.mat = p.mat, insig = "pch"
     type = "lower",
     outline.color = "white",

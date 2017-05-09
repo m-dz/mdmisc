@@ -10,7 +10,6 @@
 #' @return
 #' @export
 #' @import data.table
-#' @importFrom stringr str_detect
 #'
 #' @examples
 #' path <- mdmisc::get_active_file_path()
@@ -25,7 +24,7 @@ merge_csv <- function(path, str_to_match, suffix = '_merged') {
   process <- TRUE
   # List csv files and check for input and output matches
   csv_files <- list_csv_files(path)
-  csv_files <- csv_files[str_detect(csv_files, str_to_match)]
+  csv_files <- csv_files[stringr::str_detect(csv_files, str_to_match)]
   if (length(csv_files) <= 1) stop('Single or no matching files, quitting.')
   in_match <- sapply(csv_files, function(x) {x == paste0(str_to_match, '.csv')})
   out_match <- sapply(csv_files, function(x) {x == paste0(str_to_match, '_merged.csv')})

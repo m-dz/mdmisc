@@ -372,7 +372,7 @@ table_data_table <- function(data_in, colname) {
 #'
 #' @return \code{data.table} with pasted data
 #' @export
-#' @importFrom data.table data.table
+#' @import data.table
 #'
 #' @examples
 copy_from_clipboard <- function(header = TRUE) {

@@ -54,7 +54,7 @@ mark_outliers_quant <- function(x, na.rm = TRUE, quants = c(0.01, 0.99), return_
 #'
 #' @return
 #' @export
-#' @importFrom magrittr "%>%"
+#' @import magrittr
 #'
 #' @examples
 mark_outliers_DBSCAN <- function(x, na.rm = TRUE, quant = 0.15,

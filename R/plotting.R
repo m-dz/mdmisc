@@ -40,7 +40,7 @@ plot_binary_outcome <- function(
 {
   if(is.null(x_lab)) x_lab <- pred_name
   if(is.null(y_lab)) y_lab <- actual_name
-  g <- ggplot(df, aes_string(x = pred_name, y = actual_name)) +
+  g <- ggplot2::ggplot(df, aes_string(x = pred_name, y = actual_name)) +
     xlab(x_lab) +
     ylab(y_lab) +
     coord_cartesian(ylim = c(0, 1))
@@ -72,8 +72,7 @@ plot_binary_outcome <- function(
 #' @return
 #' @export
 #' @import data.table
-#' @import ggplot2
-#' @importFrom magrittr '%>%'
+#' @import magrittr
 #'
 #' @examples
 plot_lift_chart <- function(
@@ -97,14 +96,13 @@ plot_lift_chart <- function(
   ) %>% setnames(c("Sale", "Pred", "PredBinned"))
   tab_summary <- tab[, list(ConvPerBin = sum(Sale)/.N*100, Count = .N), by = PredBinned]
 
-
   if (plot_volumes) {
     dummyTable1 <- tab_summary[, .(PredBinned, y = ConvPerBin)] %>% .[, DummyPanel := "1. Conversion [%]"]
     dummyTable2 <- tab_summary[, .(PredBinned, y = Count)] %>% .[, DummyPanel := "2. Count"]
     dummyTable <- rbind(dummyTable1, dummyTable2)
 
-    # ggplot(tab_summary) + geom_bar(aes(PredBinned, ConvPerBin), stat = "identity") + theme_light()
-    g <- ggplot(dummyTable) +
+    # ggplot2::ggplot(tab_summary) + geom_bar(aes(PredBinned, ConvPerBin), stat = "identity") + theme_light()
+    g <- ggplot2::ggplot(dummyTable) +
       facet_grid(DummyPanel ~ ., scales = "free_y") +
       geom_bar(aes(PredBinned, y), stat = "identity", position = "identity") +
       theme_light() +
@@ -114,7 +112,7 @@ plot_lift_chart <- function(
       theme(axis.title.y = element_blank()) +
       theme(panel.grid.major.x = element_blank())
   } else {
-    g <- ggplot(tab_summary) +
+    g <- ggplot2::ggplot(tab_summary) +
       geom_bar(aes(PredBinned, ConvPerBin), stat = "identity") +
       theme_light() +
       theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +

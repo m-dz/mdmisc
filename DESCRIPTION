@@ -20,8 +20,8 @@ Imports:
     Hmisc          (>= 4.0-2),
     httr           (>= 1.2.1),
     magrittr       (>= 1.5),
+    mailR          (>= 0.4.1),
     microbenchmark (>= 1.4-2.1),
-    pacman         (>= 0.4.1),
     rstudioapi     (>= 0.6),
     stringr        (>= 1.2.0)
 RoxygenNote: 6.0.1

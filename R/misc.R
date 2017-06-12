@@ -1,4 +1,29 @@
 
+#' Returns normalized dir path to running script
+#'
+#' Returns normalized dir path then run from a console or sourced
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_running_script_dir_cmd <- function() {
+  # Based on https://stackoverflow.com/a/15373917/4272484
+  # which is based on two other answers:
+  # https://stackoverflow.com/a/1815743/4272484
+  # https://stackoverflow.com/a/16046056/4272484
+  cmd_args <- commandArgs(trailingOnly = FALSE)
+  needle <- "--file="
+  match <- grep(needle, cmd_args)
+  if (length(match) > 0) {
+    # Rscript
+    return(normalizePath(sub(needle, "", cmd_args[match])))
+  } else {
+    # 'source'd via R console
+    return(normalizePath(sys.frames()[[1]]$ofile))
+  }
+}
+
 #' Copy file and create dir if needed
 #'
 #' http://stackoverflow.com/a/10268255/4272484

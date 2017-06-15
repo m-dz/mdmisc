@@ -7,5 +7,5 @@
 get_running_script_dir_cmd()
 }
 \description{
-Returns normalized dir path to running script
+Returns normalized dir path then run from a console or sourced
 }

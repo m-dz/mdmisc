@@ -50,14 +50,14 @@ fread_CSVs_from_list <- function(file_list, verbose = FALSE, fill = TRUE, patter
     file_list <- file_list[stringr::str_detect(file_list, pattern)]
   }
   for (file_name in file_list) {
-    data_name <- str_extract(file_name, '([0-9a-zA-Z -]*)\\.csv$')
+    data_name <- stringr::str_extract(file_name, '([0-9a-zA-Z -]*)\\.csv$')
     if(verbose) print(paste0("Reading file: ", data_name))
-    out_list[[str_replace(data_name, ".csv", "")]] <- data.table::fread(file_name)
+    out_list[[stringr::str_replace(data_name, ".csv", "")]] <- data.table::fread(file_name)
   }
   if(fill) {
     warning('Function is filling missing columns!')
-    rbindlist(out_list, fill = TRUE)
+    data.table::rbindlist(out_list, fill = TRUE)
   } else {
-    rbindlist(out_list, fill = FALSE)
+    data.table::rbindlist(out_list, fill = FALSE)
   }
 }

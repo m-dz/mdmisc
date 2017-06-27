@@ -15,6 +15,7 @@
 #'
 #' @return Plot object
 #' @export
+#' @import ggplot2
 #'
 #' @examples
 #' df <- data.frame(
@@ -40,7 +41,7 @@ plot_binary_outcome <- function(
 {
   if(is.null(x_lab)) x_lab <- pred_name
   if(is.null(y_lab)) y_lab <- actual_name
-  g <- ggplot2::ggplot(df, aes_string(x = pred_name, y = actual_name)) +
+  g <- ggplot(df, aes_string(x = pred_name, y = actual_name)) +
     xlab(x_lab) +
     ylab(y_lab) +
     coord_cartesian(ylim = c(0, 1))
@@ -73,6 +74,7 @@ plot_binary_outcome <- function(
 #' @export
 #' @import data.table
 #' @import magrittr
+#' @import ggplot2
 #'
 #' @examples
 plot_lift_chart <- function(
@@ -101,8 +103,8 @@ plot_lift_chart <- function(
     dummyTable2 <- tab_summary[, .(PredBinned, y = Count)] %>% .[, DummyPanel := "2. Count"]
     dummyTable <- rbind(dummyTable1, dummyTable2)
 
-    # ggplot2::ggplot(tab_summary) + geom_bar(aes(PredBinned, ConvPerBin), stat = "identity") + theme_light()
-    g <- ggplot2::ggplot(dummyTable) +
+    # ggplot(tab_summary) + geom_bar(aes(PredBinned, ConvPerBin), stat = "identity") + theme_light()
+    g <- ggplot(dummyTable) +
       facet_grid(DummyPanel ~ ., scales = "free_y") +
       geom_bar(aes(PredBinned, y), stat = "identity", position = "identity") +
       theme_light() +
@@ -112,7 +114,7 @@ plot_lift_chart <- function(
       theme(axis.title.y = element_blank()) +
       theme(panel.grid.major.x = element_blank())
   } else {
-    g <- ggplot2::ggplot(tab_summary) +
+    g <- ggplot(tab_summary) +
       geom_bar(aes(PredBinned, ConvPerBin), stat = "identity") +
       theme_light() +
       theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +

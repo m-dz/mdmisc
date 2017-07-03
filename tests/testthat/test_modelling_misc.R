@@ -1,6 +1,8 @@
 
 context('Test modelling_misc.R functions from mdmisc package')
 
+suppressMessages(library(pROC))
+
 test_that('gini_norm is equal 2 * AUC - 1', {
   df <- data.frame(
    actual = c(1,1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0),

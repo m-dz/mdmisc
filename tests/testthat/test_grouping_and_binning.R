@@ -1,10 +1,14 @@
 
 context("Test grouping_and_binning.R functions from mdmisc package")
 
+library(testthat)
+library(mdmisc)
+library(data.table)
+
 test_that("group_by_threshold parameters checks", {
   # Load packages and generate data
   set.seed(2016)
-  dt <- data.table::data.table('cat' = sample(letters[1:10], 20, replace = TRUE), 'cont' = rnorm(20))
+  dt <- data.table('cat' = sample(letters[1:10], 20, replace = TRUE), 'cont' = rnorm(20))
 
   expect_error(group_by_threshold(dt, 'cat', threshold = 0.2, cum_threshold = 0.2, no_of_categories = NULL))
   expect_error(group_by_threshold(dt, 'cat', threshold = 0.2, cum_threshold = 0.2, no_of_categories = 10))
@@ -15,7 +19,7 @@ test_that("group_by_threshold parameters checks", {
 test_that("cumulative frequencies and cuts are calculated correctly", {
   # Load packages and generate data
   set.seed(2016)
-  dt <- data.table::data.table('cat' = sample(letters[1:10], 20, replace = TRUE), 'cont' = rnorm(20))
+  dt <- data.table('cat' = sample(letters[1:10], 20, replace = TRUE), 'cont' = rnorm(20))
 
   expect_equal(
     group_by_threshold(dt, 'cat')[['PCT']],
@@ -37,7 +41,7 @@ test_that("cumulative frequencies and cuts are calculated correctly", {
 test_that("data are modified correctly", {
   # Load packages and generate data
   set.seed(2016)
-  dt <- data.table::data.table('cat' = sample(letters[1:10], 20, replace = TRUE), 'cont' = rnorm(20))
+  dt <- data.table('cat' = sample(letters[1:10], 20, replace = TRUE), 'cont' = rnorm(20))
 
   expect_error(group_by_threshold(dt, 'cat', return_data = TRUE))
   # expect_equal(

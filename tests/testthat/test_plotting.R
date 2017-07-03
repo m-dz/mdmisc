@@ -10,9 +10,9 @@ test_that('plot_binary_outcome is working as expected', {
   p1 <- plot_binary_outcome(df, 'predicted', 'actual')
   p2 <- plot_binary_outcome(df, 'predicted', 'actual', smoothing_level = 0.75)
   p3 <- plot_binary_outcome(df, 'predicted', 'actual', x_lab = 'Predicted', y_lab = 'Actual')
-  p4 <- plot_binary_outcome(df, 'predicted', 'actual', theme = theme_bw())
-  p5 <- plot_binary_outcome(df, 'predicted', 'actual', type = 'pipes', theme = theme_bw())
-  p6 <- plot_binary_outcome(df, 'predicted', 'actual', type = 'jitter', theme = theme_bw())
+  p4 <- plot_binary_outcome(df, 'predicted', 'actual', theme = ggplot2::theme_bw())
+  p5 <- plot_binary_outcome(df, 'predicted', 'actual', type = 'pipes', theme = ggplot2::theme_bw())
+  p6 <- plot_binary_outcome(df, 'predicted', 'actual', type = 'jitter', theme = ggplot2::theme_bw())
 
   expect_is(p1, class = c('gg', 'ggplot'))
   expect_is(p2, class = c('gg', 'ggplot'))

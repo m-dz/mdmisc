@@ -1,6 +1,37 @@
 
 context("Test data.table_misc.R functions from mdmisc package")
 
+library(testthat)
+library(mdmisc)
+library(data.table)
+
+test_that('sample_rows is working and expected', {
+  # set.seed(2016)
+  size <- 20
+  dt <- data.table(
+    id = 1:size, A = sample(letters[1:3], size, replace = TRUE),
+    B = sample(c('Y','N'), size, replace = TRUE),
+    C = sample(1:100, size, replace = TRUE) + sample(30:70, size, replace = TRUE))
+
+  ### Parameters checks
+  # sample_rows(dt, vol = 1000)
+  expect_error(sample_rows(dt, pct = 50), regexp = 'Please specify pct as a fraction')
+  expect_error(sample_rows(dt, vol = 1000, pct = 0.1), regexp = 'Please specify either pct or vol.')
+  expect_error(sample_rows(dt), regexp = 'Please specify either pct or vol.')
+
+  ### Volumes (should NOT fail even without seeds)
+  # set.seed(2016)
+  dt_sampled <- sample_rows(dt, 0.5, grouping = 'A')
+  expect_equal(dt[, round(table(A)/2)], dt_sampled[, table(A)])
+  # set.seed(2016)
+  dt_sampled <- sample_rows(dt, 0.5, grouping = 'A', sort = TRUE)
+  expect_equal(dt[, round(table(A)/2)], dt_sampled[, table(A)])
+  expect_equal(dt_sampled[, A], sort(dt_sampled[, A]))
+  # set.seed(2016)
+  dt_sampled <- sample_rows(dt, 0.5, grouping = c('A','B'), sort = TRUE)
+  expect_true(all(between(dt[, round(table(A, B)/2)] - dt_sampled[, table(A, B)], -1, 1)))
+})
+
 test_that('leave_cols is working and expected', {
   require(data.table)
   dt <- data.table(a = 1:3, b = 1:3, g = 1:3)

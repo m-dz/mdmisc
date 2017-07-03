@@ -56,13 +56,28 @@ sample_ids <- function(dt, pct, grouping = NULL, sort = FALSE, return_grouping =
 #' sample_rows(dt, 0.5, grouping = 'A')
 #' sample_rows(dt, 0.5, grouping = 'A', sort = TRUE)
 #' sample_rows(dt, 0.5, grouping = c('A','B'), sort = TRUE)
-sample_rows <- function(dt, pct, grouping, sort = FALSE) {
-  out <- dt[dt[, sample(.I, round(.N*pct)), by = grouping]$V1, ]
+sample_rows <- function(dt, pct = NULL, vol = NULL, grouping = NULL, sort = FALSE) {
+  if(!xor(is.null(pct), is.null(vol))) stop('Please specify either pct or vol.')
+  if(is.not.null(pct)) if(!data.table::between(pct, 0.0, 1.0)) stop (paste0('Please specify pct as a fraction between 0.0 and 1.0 (inclusive). Did you mean ', pct/100, '?'))
+  out <-
+    if(is.not.null(pct)) {
+      dt[dt[, sample(.I, round(.N*pct)), by = grouping]$V1, ]
+    } else {
+      ### TODO: If vol bigger than what is possible within the grouping warn and return every row?
+      dt[dt[, sample(.I, vol), by = grouping]$V1, ]
+    }
   if(sort) {
     setorderv(out, grouping)
     out
   } else out
 }
+  # function(dt, pct, grouping, sort = FALSE) {
+  #   out <- dt[dt[, sample(.I, round(.N*pct)), by = grouping]$V1, ]
+  #   if(sort) {
+  #     setorderv(out, grouping)
+  #     out
+  #   } else out
+  # }
 
 #' Replace given value in a random pct of rows (by grouping)
 #'

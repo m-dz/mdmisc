@@ -2,7 +2,7 @@
 context("Test text_processing.R functions from mdmisc package")
 
 test_that("str_to_Capital is working as expected", {
-  expect_equal(str_to_Capital('test'), 'Test')
+  expect_equal(mdmisc:::str_to_Capital('test'), 'Test')
 })
 
 test_that("str_to_CamelCase is working as expected", {

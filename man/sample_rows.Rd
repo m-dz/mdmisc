@@ -4,7 +4,7 @@
 \alias{sample_rows}
 \title{Title}
 \usage{
-sample_rows(dt, pct, grouping, sort = FALSE)
+sample_rows(dt, pct = NULL, vol = NULL, grouping = NULL, sort = FALSE)
 }
 \arguments{
 \item{dt}{\code{data.table} to sample from}

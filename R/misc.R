@@ -1,4 +1,26 @@
 
+#' Checks R version agains desired
+#'
+#' @param compare_to
+#' @param comparison
+#'
+#' @return
+#' @export
+#'
+#' @examples
+check_R_version <- function(compare_to = NULL, comparison = 'eq') {
+  if(is.null(compare_to)) stop('compare_to argument missing, please provide R version to compare with.')
+  R_ver <- paste(version$major, version$minor, sep = '.')
+  switch(comparison,
+    equal = { R_ver == compare_to },
+    less = { R_ver < compare_to },
+    less_or_equal = { R_ver <= compare_to },
+    greater = { R_ver > compare_to },
+    greater_or_equal = { R_ver >= compare_to },
+    diff = { R_ver != compare_to }
+  )
+}
+
 #' Returns normalized dir path to running script
 #'
 #' Returns normalized dir path then run from a console or sourced

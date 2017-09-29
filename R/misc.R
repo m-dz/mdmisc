@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples
-check_R_version <- function(compare_to = NULL, comparison = 'eq') {
+check_R_version <- function(compare_to = NULL, comparison = 'equal') {
   if(is.null(compare_to)) stop('compare_to argument missing, please provide R version to compare with.')
   R_ver <- paste(version$major, version$minor, sep = '.')
   switch(comparison,

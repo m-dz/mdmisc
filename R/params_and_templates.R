@@ -8,6 +8,8 @@
 #'
 #' @return
 #' @export
+#' @import data.table
+#' @import magrittr
 #'
 #' @examples
 substitute_params <- function(params_table, template_files, target_dir = get_active_file_path(), cols_to_ignore = c('PARAM_FILE_NAME_DATE', 'COMMENTS')) {

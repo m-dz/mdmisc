@@ -4,7 +4,7 @@
 \alias{check_R_version}
 \title{Checks R version agains desired}
 \usage{
-check_R_version(compare_to = NULL, comparison = "eq")
+check_R_version(compare_to = NULL, comparison = "equal")
 }
 \arguments{
 \item{comparison}{}

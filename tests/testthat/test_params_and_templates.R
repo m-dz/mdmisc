@@ -7,7 +7,8 @@ library(data.table)
 
 test_that('substitute_params is working as expected', {
   dt_params <- data.table(
-    PARAM_FILE_NAME_DATE = c('201710_AAA', '201710_BBB', 201711),
+    PARAM_DIR_NAME = c('201710_DIR', '201710_DIR', '201710_DIR'),
+    PARAM_FILE_NAME = c('201710_AAA', '201710_BBB', 201711),
     PARAM_1 = c('XYZ', 'ZYX', 'AAA'),
     PARAM_2 = c('QWERTY', 'YTREWQ', 'BBB'),
     COMMENTS = c('ignore', '', 'ignore_2')
@@ -30,7 +31,7 @@ test_that('substitute_params is working as expected', {
   # testthat::expect_equal(dt, dt_res)
   ## Cleanup created files
   for(param_row_id in seq_len(nrow(dt_params))) {
-    new_dir <- file.path(dirname(temp_dir), paste0(dt_params[param_row_id, PARAM_FILE_NAME_DATE]))
+    new_dir <- file.path(dirname(temp_dir), paste0(dt_params[param_row_id, PARAM_DIR_NAME]))
     unlink(paste0(new_dir, '_NOT_RUN'), recursive = TRUE)
   }
 })

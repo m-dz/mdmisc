@@ -12,12 +12,12 @@
 #' @import magrittr
 #'
 #' @examples
-substitute_params <- function(params_table, template_files, target_dir = get_active_file_path(), cols_to_ignore = c('PARAM_FILE_NAME_DATE', 'COMMENTS')) {
+substitute_params <- function(params_table, template_files, target_dir = get_active_file_path(), cols_to_ignore = c('PARAM_DIR_NAME', 'PARAM_FILE_NAME', 'COMMENTS')) {
   params_names <- names(params_table) %>% setdiff(cols_to_ignore)
   for(param_row_id in seq_len(nrow(params_table))) {
     param_row <- params_table[param_row_id, ]
     ## New dir to create
-    new_dir <- file.path(dirname(target_dir), paste0(param_row[1, PARAM_FILE_NAME_DATE]))
+    new_dir <- file.path(dirname(target_dir), paste0(param_row[1, PARAM_DIR_NAME]))
     new_dirnot_run <- paste0(new_dir, '_NOT_RUN')
     ## Proceed only if target_dir does not exist
     if(!dir.exists(new_dirnot_run)) dir.create(new_dirnot_run)
@@ -31,8 +31,8 @@ substitute_params <- function(params_table, template_files, target_dir = get_act
         # print(param)
         query_content <- stringr::str_replace(query_content, param, unname(unlist(param_row[1, ..param])))
       }
-      ## Replace _YYYYMM_ in template name with PARAM_FILE_NAME_DATE
-      new_query_name <- stringr::str_replace(template, '_YYYYMM_', paste0('_', param_row[1, PARAM_FILE_NAME_DATE], '_'))
+      ## Replace _YYYYMM_ in template name with PARAM_FILE_NAME
+      new_query_name <- stringr::str_replace(template, '_YYYYMM_', paste0('_', param_row[1, PARAM_FILE_NAME], '_'))
       con_out <- file(file.path(new_dirnot_run, new_query_name), 'w', blocking = TRUE)
       writeLines(query_content, con_out)
       close(con_in)

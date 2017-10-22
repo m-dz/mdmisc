@@ -18,27 +18,25 @@ substitute_params <- function(params_table, template_files, target_dir = get_act
     param_row <- params_table[param_row_id, ]
     ## New dir to create
     new_dir <- file.path(dirname(target_dir), paste0(param_row[1, PARAM_FILE_NAME_DATE]))
+    new_dirnot_run <- paste0(new_dir, '_NOT_RUN')
     ## Proceed only if target_dir does not exist
-    # if(!dir.exists(new_dir)) {
-      new_dirnot_run <- paste0(new_dir, '_NOT_RUN')
-      dir.create(new_dirnot_run)
-      ## Parse all templates
-      for(template in template_files) {
-        ## Read in
-        con_in <- file(file.path(target_dir, template), 'r', blocking = TRUE)
-        query_content <- readLines(con_in)
-        ## Replace all params
-        for(param in params_names) {
-          # print(param)
-          query_content <- stringr::str_replace(query_content, param, unname(unlist(param_row[1, ..param])))
-        }
-        ## Replace _YYYYMM_ in template name with PARAM_FILE_NAME_DATE
-        new_query_name <- stringr::str_replace(template, '_YYYYMM_', paste0('_', param_row[1, PARAM_FILE_NAME_DATE], '_'))
-        con_out <- file(file.path(new_dirnot_run, new_query_name), 'w', blocking = TRUE)
-        writeLines(query_content, con_out)
-        close(con_in)
-        close(con_out)
+    if(!dir.exists(new_dirnot_run)) dir.create(new_dirnot_run)
+    ## Parse all templates
+    for(template in template_files) {
+      ## Read in
+      con_in <- file(file.path(target_dir, template), 'r', blocking = TRUE)
+      query_content <- readLines(con_in)
+      ## Replace all params
+      for(param in params_names) {
+        # print(param)
+        query_content <- stringr::str_replace(query_content, param, unname(unlist(param_row[1, ..param])))
       }
-    # }
+      ## Replace _YYYYMM_ in template name with PARAM_FILE_NAME_DATE
+      new_query_name <- stringr::str_replace(template, '_YYYYMM_', paste0('_', param_row[1, PARAM_FILE_NAME_DATE], '_'))
+      con_out <- file(file.path(new_dirnot_run, new_query_name), 'w', blocking = TRUE)
+      writeLines(query_content, con_out)
+      close(con_in)
+      close(con_out)
+    }
   }
 }
